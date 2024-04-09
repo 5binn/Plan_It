@@ -23,11 +23,6 @@ public class Curriculum extends BaseEntity {
     private SiteUser host;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    @ManyToMany
-    @JoinTable(
-            name = "curriculum_guests", // 매핑 테이블의 이름
-            joinColumns = @JoinColumn(name = "curriculum_id"), // Curriculum 엔티티의 외래 키
-            inverseJoinColumns = @JoinColumn(name = "guest_id") // SiteUser 엔티티의 외래 키
-    )
-    private List<SiteUser> guests;
+    @OneToMany(mappedBy = "curriculum")
+    private List<CurriculumGuest> Guests;
 }
