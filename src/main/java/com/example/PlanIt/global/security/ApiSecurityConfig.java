@@ -15,7 +15,7 @@ public class ApiSecurityConfig {
         http
                 .securityMatcher(new AntPathRequestMatcher("/api/**"))
                 .authorizeRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers(new AntPathRequestMatcher("/api/*/articles/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/*/curriculums/**")).permitAll()
                         .anyRequest().authenticated())
                 .csrf((csrf) -> csrf
                         .disable())

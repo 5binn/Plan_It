@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Util {
 
     public static class json {
@@ -16,5 +19,10 @@ public class Util {
                 return null;
             }
         }
+    }
+
+    public static LocalDateTime toDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(date, formatter);
     }
 }

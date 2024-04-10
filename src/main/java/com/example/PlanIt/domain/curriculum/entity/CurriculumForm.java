@@ -12,7 +12,7 @@ public class CurriculumForm {
     @NotBlank(message = "제목을 입력하세요.")
     private String name;
     @NotBlank(message = "시작 날짜를 선택하세요.")
-    private LocalDateTime startDate;
+    private String startDate;
     @NotBlank(message = "종료 날짜를 선택하세요.")
-    private LocalDateTime endDate;
+    private String endDate;
 }

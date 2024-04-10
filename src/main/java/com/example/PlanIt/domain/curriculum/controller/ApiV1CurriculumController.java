@@ -4,11 +4,14 @@ import com.example.PlanIt.domain.curriculum.entity.Curriculum;
 import com.example.PlanIt.domain.curriculum.entity.CurriculumForm;
 import com.example.PlanIt.domain.curriculum.service.CurriculumService;
 import com.example.PlanIt.domain.user.entity.SiteUser;
+import com.example.PlanIt.domain.user.service.UserService;
 import com.example.PlanIt.global.rsData.RsData;
+import com.example.PlanIt.global.util.Util;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -16,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApiV1CurriculumController {
     private final CurriculumService curriculumService;
+    private final UserService userService;
 
     @GetMapping("")
     public RsData<List<Curriculum>> getCurriculums() {
@@ -29,7 +33,9 @@ public class ApiV1CurriculumController {
 
     @PostMapping("")
     public RsData<Curriculum> create(@Valid @RequestBody CurriculumForm curriculumForm) {
-        return this.curriculumService.create(curriculumForm.getName(), new SiteUser(), curriculumForm.getStartDate(), curriculumForm.getEndDate());
+        SiteUser host = userService.getUserById(1L).getData(); //임시
+
+        return this.curriculumService.create(curriculumForm.getName(), host, Util.toDate(curriculumForm.getStartDate()), Util.toDate(curriculumForm.getEndDate()));
     }
 
     @DeleteMapping("/{id}")
@@ -39,6 +45,6 @@ public class ApiV1CurriculumController {
 
     @PatchMapping("/{id}")
     public RsData<Curriculum> update(@PathVariable("id") Long id, @Valid @RequestBody CurriculumForm curriculumForm) {
-        return this.curriculumService.update(id,curriculumForm.getName(), curriculumForm.getStartDate(), curriculumForm.getEndDate());
+        return this.curriculumService.update(id,curriculumForm.getName(), Util.toDate(curriculumForm.getStartDate()), Util.toDate(curriculumForm.getEndDate()));
     }
 }

@@ -1,6 +1,7 @@
 package com.example.PlanIt.domain.user.entity;
 
 import com.example.PlanIt.global.jpa.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SiteUser extends BaseEntity {
+    @JsonIgnore
     private String username;
+    @JsonIgnore
     private String password;
     private String nickname;
     private String email;

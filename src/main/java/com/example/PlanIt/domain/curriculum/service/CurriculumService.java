@@ -75,8 +75,7 @@ public class CurriculumService {
             this.curriculumRepository.delete(curriculumRsData.getData());
             return RsData.of(
                     "S-4",
-                    "%d 번 삭제 완료".formatted(id),
-                    curriculumRsData.getData()
+                    "%d 번 삭제 완료".formatted(id)
             );
         } catch (Exception e) {
             return RsData.of(
