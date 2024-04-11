@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SiteUser extends BaseEntity {
-    @JsonIgnore
     private String username;
     @JsonIgnore
     private String password;

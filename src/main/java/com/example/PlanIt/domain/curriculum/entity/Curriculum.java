@@ -23,6 +23,4 @@ public class Curriculum extends BaseEntity {
     private SiteUser host;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    @OneToMany(mappedBy = "curriculum")
-    private List<CurriculumGuest> Guests;
 }

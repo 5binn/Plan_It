@@ -17,6 +17,19 @@ public class UserService {
     private final UserRepository userRepository;
 
 
+    public RsData<List<SiteUser>> getUsers() {
+        return userRepository.findAll().isEmpty() ?
+                RsData.of(
+                        "F-1",
+                        "데이터 없음"
+                ) :
+                RsData.of(
+                        "S-1",
+                        "성공",
+                        userRepository.findAll()
+                );
+    }
+
     public RsData<SiteUser> getUserById(Long id) {
         return userRepository.findById(id).map((siteUser) -> RsData.of(
                 "S-2",
@@ -61,8 +74,7 @@ public class UserService {
             this.userRepository.delete(siteUserRsData.getData());
             return RsData.of(
                     "S-4",
-                    "%d 번 삭제 완료".formatted(id),
-                    siteUserRsData.getData()
+                    "%d 번 삭제 완료".formatted(id)
             );
         } catch (Exception e) {
             return RsData.of(

@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SiteUserForm {
+public class UserForm{
     @NotBlank(message = "ID를 입력하세요.")
     private String username;
     @NotBlank(message = "비밀번호를 입력하세요.")
