@@ -44,7 +44,7 @@ public class CurriculumService {
     }
 
     @Transactional
-    public RsData<Curriculum> create(String name, SiteUser host, LocalDateTime startDate, LocalDateTime endDate) {
+    public RsData<Curriculum> create(String name, SiteUser host, LocalDate startDate, LocalDate endDate) {
         try {
             Curriculum curriculum = Curriculum.builder()
                     .name(name)
@@ -86,7 +86,7 @@ public class CurriculumService {
         }
     }
     @Transactional
-    public RsData<Curriculum> update(Long id, String name, LocalDateTime startDate, LocalDateTime endDate) {
+    public RsData<Curriculum> update(Long id, String name, LocalDate startDate, LocalDate endDate) {
         RsData<Curriculum> curriculumRsData = this.getCurriculumById(id);
         if (curriculumRsData.isFail()) {
             return curriculumRsData;

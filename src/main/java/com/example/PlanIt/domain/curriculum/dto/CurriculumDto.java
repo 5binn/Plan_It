@@ -5,6 +5,7 @@ import com.example.PlanIt.domain.user.dto.UserDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,8 +14,8 @@ public class CurriculumDto {
     private Long id;
     private String name;
     private UserDto host;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 

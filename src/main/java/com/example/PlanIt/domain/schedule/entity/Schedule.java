@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -20,5 +21,5 @@ public class Schedule extends BaseEntity {
     @ManyToOne
     private Curriculum curriculum;
     private String content;
-    private LocalDate date;
+    private LocalDateTime date;
 }

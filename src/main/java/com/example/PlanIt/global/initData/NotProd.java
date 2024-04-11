@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Configuration
@@ -23,11 +24,11 @@ public class NotProd {
             SiteUser user2 = userService.create("user2", password, "닉네임2","test2@test.com").getData();
             SiteUser admin = userService.create("admin", password, "관리자","admin@test.com").getData();
 
-            curriculumService.create("이름1",user1, LocalDateTime.now(), LocalDateTime.now().plusDays(1L));
-            curriculumService.create("이름2",user1, LocalDateTime.now(), LocalDateTime.now().plusDays(2L));
-            curriculumService.create("이름3",user2, LocalDateTime.now(), LocalDateTime.now().plusDays(3L));
-            curriculumService.create("이름4",user2, LocalDateTime.now(), LocalDateTime.now().plusDays(4L));
-            curriculumService.create("이름5",admin, LocalDateTime.now(), LocalDateTime.now().plusDays(5L));
+            curriculumService.create("이름1",user1, LocalDate.now(), LocalDate.now().plusDays(1L));
+            curriculumService.create("이름2",user1, LocalDate.now(), LocalDate.now().plusDays(2L));
+            curriculumService.create("이름3",user2, LocalDate.now(), LocalDate.now().plusDays(3L));
+            curriculumService.create("이름4",user2, LocalDate.now(), LocalDate.now().plusDays(4L));
+            curriculumService.create("이름5",admin, LocalDate.now(), LocalDate.now().plusDays(5L));
         };
     }
 }

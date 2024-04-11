@@ -46,7 +46,31 @@ public class ApiV1GuestController {
     @GetMapping("/curriculum/{id}")
     public RsData<Response.getGuests> getGuestsByCurriculumId(@PathVariable("id") Long id) {
         RsData<List<Guest>> rsData = this.guestService.getGuestsByCurriculumId(id);
-        System.out.println(id);
+        if (rsData.isFail()) {
+            return (RsData) rsData;
+        }
+        return RsData.of(
+                rsData.getResultCode(),
+                rsData.getMessage(),
+                new Response.getGuests(this.toDtoList(rsData.getData()))
+        );
+    }
+
+    @GetMapping("/curriculum/{id}/approve")
+    public RsData<Response.getGuests> getApprovedGuests(@PathVariable("id") Long id) {
+        RsData<List<Guest>> rsData = this.guestService.getApprovedGuestsByCurriculumId(id);
+        if (rsData.isFail()) {
+            return (RsData) rsData;
+        }
+        return RsData.of(
+                rsData.getResultCode(),
+                rsData.getMessage(),
+                new Response.getGuests(this.toDtoList(rsData.getData()))
+        );
+    }
+    @GetMapping("/curriculum/{id}/wait")
+    public RsData<Response.getGuests> getWaitingGuests(@PathVariable("id") Long id) {
+        RsData<List<Guest>> rsData = this.guestService.getWaitingGuestsByCurriculumId(id);
         if (rsData.isFail()) {
             return (RsData) rsData;
         }
@@ -60,7 +84,6 @@ public class ApiV1GuestController {
     @GetMapping("/user/{id}")
     public RsData<Response.getGuests> getGuestsByUserId(@PathVariable("id") Long id) {
         RsData<List<Guest>> rsData = this.guestService.getGuestsByUserId(id);
-        System.out.println(id);
         if (rsData.isFail()) {
             return (RsData) rsData;
         }

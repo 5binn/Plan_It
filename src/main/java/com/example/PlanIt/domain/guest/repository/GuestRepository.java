@@ -15,4 +15,10 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
 
     @Query("SELECT g FROM Guest g WHERE g.curriculum.id = :curriculumId")
     List<Guest> findGuestsByCurriculumId(@Param("curriculumId") Long curriculumId);
+
+    @Query("SELECT g FROM Guest g WHERE g.curriculum.id = :curriculumId AND g.invite = true")
+    List<Guest> findGuestsByCurriculumIdTrue(@Param("curriculumId") Long curriculumId);
+
+    @Query("SELECT g FROM Guest g WHERE g.curriculum.id = :curriculumId AND g.invite = false")
+    List<Guest> findGuestsByCurriculumIdFalse(@Param("curriculumId") Long curriculumId);
 }

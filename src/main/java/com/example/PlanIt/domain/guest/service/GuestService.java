@@ -56,6 +56,31 @@ public class GuestService {
                 );
     }
 
+    public RsData<List<Guest>> getApprovedGuestsByCurriculumId(Long curriculumId) {
+        return guestRepository.findGuestsByCurriculumIdTrue(curriculumId).isEmpty() ?
+                RsData.of(
+                        "F-1CA",
+                        "데이터 없음"
+                ) :
+                RsData.of(
+                        "S-1CA",
+                        "성공",
+                        guestRepository.findGuestsByCurriculumIdTrue(curriculumId)
+                );
+    }
+    public RsData<List<Guest>> getWaitingGuestsByCurriculumId(Long curriculumId) {
+        return guestRepository.findGuestsByCurriculumIdFalse(curriculumId).isEmpty() ?
+                RsData.of(
+                        "F-1CW",
+                        "데이터 없음"
+                ) :
+                RsData.of(
+                        "S-1CW",
+                        "성공",
+                        guestRepository.findGuestsByCurriculumIdFalse(curriculumId)
+                );
+    }
+
     public RsData<Guest> getGuestById(Long id) {
         return guestRepository.findById(id).map((curriculum) -> RsData.of(
                 "S-2",
