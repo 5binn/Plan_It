@@ -4,6 +4,7 @@ import com.example.PlanIt.domain.curriculum.entity.Curriculum;
 import com.example.PlanIt.domain.schedule.entity.Schedule;
 import com.example.PlanIt.domain.user.entity.SiteUser;
 import com.example.PlanIt.global.jpa.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;

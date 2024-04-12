@@ -55,7 +55,7 @@ public class ApiV1CurriculumController {
     }
 
     @PostMapping("")
-    public RsData<Response.createCurriculum> createCurriculum(@Valid @RequestBody CurriculumForm curriculumForm) {
+    public RsData<Response.createCurriculum> createCurriculum (@Valid @RequestBody CurriculumForm curriculumForm) {
         SiteUser host = userService.getUserById(1L).getData(); //임시
         RsData<Curriculum> rsData = this.curriculumService.create(
                 curriculumForm.getName(), host, Util.toDate(curriculumForm.getStartDate()), Util.toDate(curriculumForm.getEndDate()));

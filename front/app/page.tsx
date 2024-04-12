@@ -22,6 +22,11 @@ export default function Home() {
     <div className="h-screen bg-white">
       
       <h1 className=""> 홈 입니다. </h1>
+      <h1 className=""> 로그인 </h1>
+      <h1 className=""> 회원가입 </h1>
+      <h1 className=""> ID/PW찾기 </h1>
+      <h1 className=""> 로그인되면 달력으로 화면 전환 </h1>
+
     </div>
   );
 }
