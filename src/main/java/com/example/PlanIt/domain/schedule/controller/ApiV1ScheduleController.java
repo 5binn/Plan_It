@@ -71,7 +71,7 @@ public class ApiV1ScheduleController {
     }
 
     @PostMapping("/{id}") //커리큘럼 ID
-    public RsData<Response.createSchedule> createCurriculum(@PathVariable("id") Long id, @Valid @RequestBody ScheduleForm scheduleForm) {
+    public RsData<Response.createSchedule> createSchedule(@PathVariable("id") Long id, @Valid @RequestBody ScheduleForm scheduleForm) {
         RsData<Curriculum> curriculumRsData = curriculumService.getCurriculumById(id);
         if (curriculumRsData.isFail()) {
             return (RsData) curriculumRsData;
