@@ -6,4 +6,5 @@
 - [x] guest CRUD
 - [x] schedule CRUD
 - [x] comment CRUD
+- [ ] 검증
 - [ ] spin game 

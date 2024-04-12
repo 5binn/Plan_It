@@ -19,6 +19,7 @@ public class ApiSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/*/users/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/*/guests/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/*/schedules/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/*/comments/**")).permitAll()
                         .anyRequest().authenticated())
                 .csrf((csrf) -> csrf
                         .disable())
