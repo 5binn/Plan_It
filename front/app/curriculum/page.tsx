@@ -4,14 +4,9 @@ import { useEffect, useState } from "react"
 import api from "../util/api";
 import Link from "next/link";
 import CurriculumForm from "./curriculumForm";
+import { Curriculum } from "../util/type";
 
 
-export default interface Curriculum {
-    id: number;
-    name: string;
-    startDate: string;
-    endDate: string;
-}
 
 export default function Curriculum() {
 
@@ -23,7 +18,7 @@ export default function Curriculum() {
     }, [])
 
     const fetchCurriculums = () => {
-        const response = api.get('/api/v1/curriculums')
+        api.get('/api/v1/curriculums')
             .then(response => {
                 setCurriculumList(response.data.data.curriculumList);
                 setIsNull(false);
@@ -33,23 +28,23 @@ export default function Curriculum() {
     }
 
     const onDelete = async (id: number) => {
-        const response = await api.delete(`/api/v1/curriculums/${id}`)
+        await api.delete(`/api/v1/curriculums/${id}`)
         fetchCurriculums();
     }
 
     return (
         <>
-            일정관리
+            모임관리
             <CurriculumForm fetchCurriculums={fetchCurriculums} />
             {!isNull ? curriculumList.map((curriculum: Curriculum) =>
                 <li key={curriculum.id}>
-                    <span>{curriculum.name}|</span>
-                    <span>{curriculum.startDate}|</span>
-                    <span>{curriculum.endDate}</span>
-                    <Link href={"/curriculums/" + curriculum.id}>수정</Link>
+                    <Link href={"/curriculum/" + curriculum.id}>{curriculum.name}|</Link>
+                    <span >{curriculum.startDate}~</span>
+                    <span >{curriculum.endDate}</span>
+                    <Link href={"/curriculum/" + curriculum.id + "/edit"}>수정</Link>
                     <button onClick={() => onDelete(curriculum.id)}>삭제</button>
                 </li>
-            ) : <>일정을 등록해 주세요.</>}
+            ) : <>등록된 모임이 없습니다.</>}
         </>
     )
 }

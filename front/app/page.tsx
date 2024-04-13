@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Logoutted from "./logoutted";
 
 export default function Home() {
 
@@ -21,6 +22,7 @@ export default function Home() {
   return (
     <div className="h-screen bg-white">
       
+      <Logoutted></Logoutted>
       <h1 className=""> 홈 입니다. </h1>
       <h1 className=""> 로그인 </h1>
       <h1 className=""> 회원가입 </h1>
