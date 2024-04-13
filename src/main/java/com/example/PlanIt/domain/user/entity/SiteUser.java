@@ -11,12 +11,14 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +28,7 @@ public class SiteUser extends BaseEntity {
     private String password;
     private String nickname;
     private String email;
+    private String refreshToken;
 
     @OneToMany(mappedBy = "host", cascade = CascadeType.REMOVE)
     private List<Curriculum> curriculumList;

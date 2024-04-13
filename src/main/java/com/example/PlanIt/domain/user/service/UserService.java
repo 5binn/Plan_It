@@ -1,20 +1,26 @@
 package com.example.PlanIt.domain.user.service;
 
-import com.example.PlanIt.domain.curriculum.entity.Curriculum;
 import com.example.PlanIt.domain.user.entity.SiteUser;
 import com.example.PlanIt.domain.user.repository.UserRepository;
+import com.example.PlanIt.global.jwt.JwtProvider;
 import com.example.PlanIt.global.rsData.RsData;
+import com.example.PlanIt.global.security.SecurityUser;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
 
 
     public RsData<List<SiteUser>> getUsers() {
@@ -51,6 +57,8 @@ public class UserService {
                     .nickname(nickname)
                     .email(email)
                     .build();
+            String refreshToken = jwtProvider.genRefreshToken(siteUser);
+            siteUser.setRefreshToken(refreshToken);
             userRepository.save(siteUser);
             return RsData.of(
                     "S-3",
@@ -64,6 +72,49 @@ public class UserService {
             );
         }
     }
+
+    public boolean validateToken(String token) {
+        return jwtProvider.verify(token);
+    }
+
+    public RsData<String> refreshAccessToken(String refreshToken) {
+        SiteUser siteUser = userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new RuntimeException("존재하지 않는 리프레시 토큰입니다."));
+
+        String accessToken = jwtProvider.genAccessToken(siteUser);
+
+        return RsData.of("200-1", "토큰 갱신 성공", accessToken);
+    }
+
+    public SecurityUser getUserFromAccessToken(String accessToken) {
+        Map<String, Object> payloadBody = jwtProvider.getClaims(accessToken);
+
+        long id = (int) payloadBody.get("id");
+        String username = (String) payloadBody.get("username");
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        return new SecurityUser(id, username, "", authorities);
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class AuthAndMakeTokensResponseBody {
+        private SiteUser siteUser;
+        private String accessToken;
+        private String refreshToken;
+    }
+
+    @Transactional
+    public RsData<AuthAndMakeTokensResponseBody> authAndMakeTokens(String username, String password) {
+        SiteUser siteUser = this.userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("사용자가 존재하지 않습니다."));
+
+        // AccessToken 생성
+        String accessToken = jwtProvider.genAccessToken(siteUser);
+        // RefreshToken 생성
+        String refreshToken = jwtProvider.genRefreshToken(siteUser);
+
+        return RsData.of("200-1", "로그인 성공", new AuthAndMakeTokensResponseBody(siteUser, accessToken, refreshToken));
+    }
+
     @Transactional
     public RsData<SiteUser> delete(Long id) {
         RsData<SiteUser> siteUserRsData = this.getUserById(id);

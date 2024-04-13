@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Util {
 
@@ -20,6 +20,22 @@ public class Util {
                 e.printStackTrace();
                 return null;
             }
+        }
+
+        public static Object toStr(Map<String, Object> map) {
+            try {
+                return new ObjectMapper().writeValueAsString(map);
+            } catch (JsonProcessingException e) {
+                return null;
+            }
+        }
+    }
+
+    public static Map<String, Object> toMap(String jsonStr) {
+        try {
+            return new ObjectMapper().readValue(jsonStr, LinkedHashMap.class);
+        } catch (JsonProcessingException e) {
+            return null;
         }
     }
 
