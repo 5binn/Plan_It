@@ -38,6 +38,23 @@ public class ApiV1UserController {
     }
 
     @Getter
+    @AllArgsConstructor
+    public static class MeResponseBody {
+        private final UserDto userDto;
+    }
+
+    @GetMapping("/me")
+    public RsData<MeResponseBody> me () {
+        SiteUser siteUser = rq.getMember();
+
+        return RsData.of(
+                "200",
+                "내 정보 조회 성공",
+                new MeResponseBody(new UserDto(siteUser))
+        );
+    }
+
+    @Getter
     public static class LoginRequestBody {
         @NotBlank
         private String username;

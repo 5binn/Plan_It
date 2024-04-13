@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Curriculum from "./page";
 import api from "../util/api";
+import loginInfo from "../util/isLogin";
 
 
 
@@ -10,7 +11,7 @@ export default function CurriculumForm({ fetchCurriculums }: any) {
 
     const [isClick, setIsClick] = useState(false);
 
-    const create = async (e: React.FormEvent<HTMLFormElement>) => {
+    const create =  async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (curriculum.startDate > curriculum.endDate) {
             return alert('시작일은 종료일보다 늦을 수 없습니다.');

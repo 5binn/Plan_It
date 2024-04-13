@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 import Logoutted from "./logoutted";
 import './styles.css'
+import api from "./util/api";
+import loginInfo from "./util/isLogin";
+import { config } from "process";
 
 export default function Home() {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLogIn, setIsLogIn] = useState(false);
 
-  const logout = () => {
-    fetch("http://localhost:8070/api/v1/members/logout");
-  }
+
 
   return (
     <div className="">
