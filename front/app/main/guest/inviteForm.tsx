@@ -1,21 +1,21 @@
 import { useState } from "react";
-import api from "../util/api";
+import api from "../../util/api";
 
 
 
-export default function ScheduleForm({ fetchSchedules, id }: any) {
+export default function InviteForm({ fetchWaitingGuests, id }: any) {
 
-    const [schedule, setSchedule] = useState({ content: '', date: ''});
+    const [guestId, setGuestId] = useState({userId: 0});
     const [isClick, setIsClick] = useState(false);
 
     const create = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // try {
-            const response = await api.post(`/api/v1/schedules/${id}`, schedule);
+            const response = await api.post(`/api/v1/guests/${id}`, guestId);
             if (response.status == 200) {
-                setSchedule({ content: '', date: ''});
+                setGuestId({userId: 0});
                 setIsClick(!isClick);
-                fetchSchedules();
+                fetchWaitingGuests();
             } else {
                 alert('등록에 실패했습니다.');
             }
@@ -26,8 +26,8 @@ export default function ScheduleForm({ fetchSchedules, id }: any) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setSchedule({ ...schedule, [name]: value });
-        console.log({ ...schedule, [name]: value })
+        setGuestId({ ...guestId, [name]: value });
+        console.log({ ...guestId, [name]: value })
     }
 
     const handleClick = () => {
@@ -39,11 +39,9 @@ export default function ScheduleForm({ fetchSchedules, id }: any) {
             {/* {!isClick ? (<button onClick={handleClick}>등록</button>) : (<></>)} */}
             {/* {isClick ? ( */}
             <form onSubmit={create}>
-                <label >내용</label>
-                <input type="text" name="content" value={schedule.content} onChange={handleChange} />
-                <label >일자</label>
-                <input type="date" name="date" value={schedule.date} onChange={handleChange} />
-                <button type="submit">등록</button>
+                <label >ID</label>
+                <input type="number" name="userId" value={guestId.userId} onChange={handleChange} />
+                <button type="submit">초대</button>
             </form>
         </div>
     )

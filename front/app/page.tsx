@@ -1,23 +1,31 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import Logoutted from "./logoutted";
 import './styles.css'
-import api from "./util/api";
-import loginInfo from "./util/isLogin";
-import { config } from "process";
+import LoginCheck from "./loginCheck";
+import Login from "./login";
+import Logo from "./logo";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
 
-  const [isLogIn, setIsLogIn] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      const loggedIn = await LoginCheck();
+      if (loggedIn) {
+        router.push("/main");
+      } 
+    };
 
+    fetchData();
+  }, [])
 
 
   return (
-    <div className="">
-      
-      <Logoutted></Logoutted>
-
-    </div>
+    <div className="container">
+      <Logo></Logo>
+      <Login></Login>
+    </div >
   );
 }

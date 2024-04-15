@@ -2,6 +2,7 @@
 export interface Curriculum {
     id: number;
     name: string;
+    host: Host;
     startDate: string;
     endDate: string;
 }

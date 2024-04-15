@@ -1,28 +1,35 @@
+
+
 'use client'
-import InviteForm from "@/app/guest/inviteForm";
-import ScheduleForm from "@/app/schedule/scheduleForm";
+
 import api from "@/app/util/api";
-import { Curriculum, Guest, Schedule } from "@/app/util/type";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import ScheduleForm from "../../schedule/scheduleForm";
+import InviteForm from "../../guest/inviteForm";
+import { Curriculum, Guest, Schedule } from "@/app/util/type";
+import { useParams } from "next/navigation";
 
 export default function Id() {
 
     const params = useParams();
+
     const [curriculum, setCurriculum] = useState<Curriculum>();
     const [scheduleList, setScheduleList] = useState<Schedule[]>([]);
     const [approvedGuestList, setApprovedGuestList] = useState<Guest[]>([]);
     const [waitingGuestList, setWaitingGuestList] = useState<Guest[]>([]);
-    const [scheduleIsNull, setScheduleIsNull] = useState(Boolean);
-    const [approvedGuestIsNull, setApprovedGuestIsNull] = useState(Boolean);
-    const [waitingGuestIsNull, setWaitingGuestIsNull] = useState(Boolean);
+    const [scheduleIsNull, setScheduleIsNull] = useState(false);
+    const [approvedGuestIsNull, setApprovedGuestIsNull] = useState(false);
+    const [waitingGuestIsNull, setWaitingGuestIsNull] = useState(false);
 
+    
 
     useEffect(() => {
         api.get(`/api/v1/curriculums/${params.id}`)
             .then((response) => setCurriculum(response.data.data.curriculum));
     }, [params.id]);
+
+    
 
     const fetchSchedules = () => {
         api.get(`/api/v1/schedules/curriculum/${params.id}`)
@@ -38,6 +45,8 @@ export default function Id() {
     useEffect(() => {
         fetchSchedules();
     }, [params.id]);
+
+
 
     useEffect(() => {
         api.get(`/api/v1/guests/curriculum/${params.id}/approve`)
@@ -62,6 +71,7 @@ export default function Id() {
             });
     }
 
+    
     useEffect(() => {
         fetchWaitingGuests();
     }, [params.id]);
@@ -72,6 +82,7 @@ export default function Id() {
     }
 
 
+    
     return (
         <>
             모임 상세
@@ -109,3 +120,8 @@ export default function Id() {
         </>
     )
 }
+
+
+
+
+

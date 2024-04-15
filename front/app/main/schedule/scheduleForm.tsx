@@ -1,21 +1,21 @@
+import api from "@/app/util/api";
 import { useState } from "react";
-import api from "../util/api";
 
 
 
-export default function InviteForm({ fetchWaitingGuests, id }: any) {
+export default function ScheduleForm({ fetchSchedules, id }: any) {
 
-    const [guestId, setGuestId] = useState({userId: 0});
+    const [schedule, setSchedule] = useState({ content: '', date: ''});
     const [isClick, setIsClick] = useState(false);
 
     const create = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // try {
-            const response = await api.post(`/api/v1/guests/${id}`, guestId);
+            const response = await api.post(`/api/v1/schedules/${id}`, schedule);
             if (response.status == 200) {
-                setGuestId({userId: 0});
+                setSchedule({ content: '', date: ''});
                 setIsClick(!isClick);
-                fetchWaitingGuests();
+                fetchSchedules();
             } else {
                 alert('등록에 실패했습니다.');
             }
@@ -26,8 +26,8 @@ export default function InviteForm({ fetchWaitingGuests, id }: any) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setGuestId({ ...guestId, [name]: value });
-        console.log({ ...guestId, [name]: value })
+        setSchedule({ ...schedule, [name]: value });
+        console.log({ ...schedule, [name]: value })
     }
 
     const handleClick = () => {
@@ -39,9 +39,11 @@ export default function InviteForm({ fetchWaitingGuests, id }: any) {
             {/* {!isClick ? (<button onClick={handleClick}>등록</button>) : (<></>)} */}
             {/* {isClick ? ( */}
             <form onSubmit={create}>
-                <label >ID</label>
-                <input type="number" name="userId" value={guestId.userId} onChange={handleChange} />
-                <button type="submit">초대</button>
+                <label >내용</label>
+                <input type="text" name="content" value={schedule.content} onChange={handleChange} />
+                <label >일자</label>
+                <input type="date" name="date" value={schedule.date} onChange={handleChange} />
+                <button type="submit">등록</button>
             </form>
         </div>
     )

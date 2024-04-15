@@ -6,6 +6,7 @@ import com.example.PlanIt.domain.curriculum.entity.CurriculumForm;
 import com.example.PlanIt.domain.curriculum.service.CurriculumService;
 import com.example.PlanIt.domain.user.entity.SiteUser;
 import com.example.PlanIt.domain.user.service.UserService;
+import com.example.PlanIt.global.request.Rq;
 import com.example.PlanIt.global.rsData.RsData;
 import com.example.PlanIt.global.util.Response;
 import com.example.PlanIt.global.util.Util;
@@ -22,6 +23,7 @@ import java.util.List;
 public class ApiV1CurriculumController {
     private final CurriculumService curriculumService;
     private final UserService userService;
+    private final Rq rq;
 
 
     @GetMapping("")
@@ -56,7 +58,7 @@ public class ApiV1CurriculumController {
 
     @PostMapping("")
     public RsData<Response.createCurriculum> createCurriculum (@Valid @RequestBody CurriculumForm curriculumForm) {
-        SiteUser host = userService.getUserById(1L).getData(); //임시
+        SiteUser host = rq.getMember();
         RsData<Curriculum> rsData = this.curriculumService.create(
                 curriculumForm.getName(), host, Util.toDate(curriculumForm.getStartDate()), Util.toDate(curriculumForm.getEndDate()));
         if (rsData.isFail()) {

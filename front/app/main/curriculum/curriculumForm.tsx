@@ -1,7 +1,6 @@
+
 import { useState } from "react";
-import Curriculum from "./page";
-import api from "../util/api";
-import loginInfo from "../util/isLogin";
+import api from "@/app/util/api";
 
 
 
@@ -11,23 +10,19 @@ export default function CurriculumForm({ fetchCurriculums }: any) {
 
     const [isClick, setIsClick] = useState(false);
 
-    const create =  async (e: React.FormEvent<HTMLFormElement>) => {
+    const create = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (curriculum.startDate > curriculum.endDate) {
             return alert('시작일은 종료일보다 늦을 수 없습니다.');
         }
-        // try {
-            const response = await api.post("/api/v1/curriculums", curriculum);
-            if (response.status == 200) {
-                setCurriculum({ name: '', startDate: '', endDate: '' });
-                setIsClick(!isClick);
-                fetchCurriculums();
-            } else {
-                alert('등록에 실패했습니다.');
-            }
-        // } catch (error: any) {
-        //     alert(error);
-        // }
+        const response = await api.post("/api/v1/curriculums", curriculum);
+        if (response.status == 200) {
+            setCurriculum({ name: '', startDate: '', endDate: '' });
+            setIsClick(!isClick);
+            fetchCurriculums();
+        } else {
+            alert('등록에 실패했습니다.');
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
