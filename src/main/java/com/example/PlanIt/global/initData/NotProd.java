@@ -29,19 +29,19 @@ public class NotProd {
         return args ->{
             String password = passwordEncoder.encode("1234");
 
-            SiteUser user1 = userService.create("user1", password, "닉네임1","test1@test.com").getData();
-            SiteUser user2 = userService.create("user2", password, "닉네임2","test2@test.com").getData();
+            SiteUser user1 = userService.create("user1", password, "TeachMAN","test1@test.com").getData();
+            SiteUser user2 = userService.create("user2", password, "Yellow","test2@test.com").getData();
             SiteUser admin = userService.create("admin", password, "관리자","admin@test.com").getData();
 
-            Curriculum curriculum1 = curriculumService.create("이름1",user1, LocalDate.now(), LocalDate.now().plusDays(1L)).getData();
+            Curriculum curriculum1 = curriculumService.create("TOEIC",user1, LocalDate.now(), LocalDate.now().plusDays(1L)).getData();
             guestService.own(curriculum1,user1);
-            Curriculum curriculum2 = curriculumService.create("이름2",user1, LocalDate.now(), LocalDate.now().plusDays(2L)).getData();
+            Curriculum curriculum2 = curriculumService.create("정처기",user1, LocalDate.now(), LocalDate.now().plusDays(2L)).getData();
             guestService.own(curriculum2,user1);
-            Curriculum curriculum3 = curriculumService.create("이름3",user2, LocalDate.now(), LocalDate.now().plusDays(3L)).getData();
+            Curriculum curriculum3 = curriculumService.create("스터디모임",user2, LocalDate.now(), LocalDate.now().plusDays(3L)).getData();
             guestService.own(curriculum3,user2);
             Curriculum curriculum4 = curriculumService.create("이름4",user2, LocalDate.now(), LocalDate.now().plusDays(4L)).getData();
             guestService.own(curriculum4,user2);
-            Curriculum curriculum5 = curriculumService.create("이름5",admin, LocalDate.now(), LocalDate.now().plusDays(5L)).getData();
+            Curriculum curriculum5 = curriculumService.create("관리자입니다.",admin, LocalDate.now(), LocalDate.now().plusDays(5L)).getData();
             guestService.own(curriculum5,admin);
 
             //커리큘럼에 유저를 초대

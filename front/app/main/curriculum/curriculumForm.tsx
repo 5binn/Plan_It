@@ -33,7 +33,7 @@ export default function CurriculumForm({ fetchCurriculums, handleClick }: any) {
     return (
         <div className="text-sm">
             <form onSubmit={create}>
-                <label >제목</label>
+                <label >이름</label>
                 <input className="border w-full" type="text" name="name" value={curriculum.name} onChange={handleChange} />
                 <label >시작일</label>
                 <input className="border w-full" type="date" name="startDate" value={curriculum.startDate} onChange={handleChange} />

@@ -26,7 +26,7 @@ export default function Login({ }) {
         console.log({ ...user, [name]: value })
     }
     return (
-        <div className='right'>
+        <div className='right rounded-lg'>
             <form onSubmit={onLogin} className='loginBox'>
                 <div className='loginElement'>
                     <label className="loginLabel" > ID</label>

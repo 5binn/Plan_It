@@ -25,7 +25,7 @@ export default function MainLayout({ children, }: Readonly<{ children: React.Rea
                 })
         };
         fetchData();
-    }, [router])
+    }, [])
     const handleLogout = async () => {
         const response = await api.post("/api/v1/users/logout");
         if (response.status == 200) {

@@ -17,11 +17,11 @@ export default function Main() {
 
     const router = useRouter();
 
-    const [Curriculums, setCurriculums] = useState([]);
+    const [curriculums, setCurriculums] = useState([]);
     const [isNull, setIsNull] = useState(Boolean);
     const [isClick, setIsClick] = useState(Boolean);
     const [currentMonth, setCurrentMonth] = useState(new Date());
-    const [seletcedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
 
     const fetchCurriculums = () => {
@@ -76,24 +76,33 @@ export default function Main() {
         setCurrentMonth(addMonths(currentMonth, 1));
     };
 
+    const onDateClick = (day: any) => {
+        if (day !== selectedDate) {
+            setSelectedDate(day);
+        }
+    };
+
     return (
         <div className="container">
             <div className="left layout mt-4 border rounded-lg">
                 <div className="block m-1">
                     <div className="mycurriculum mt-2">
                         <span className="text-lg font-bold ml-0.5">내 모임</span>
-                        <button className="text-lg font-bold mr-1 pb-1" onClick={handleClick}>+</button>
+                        {!isClick? <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>+</button>
+                        :<button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>x</button>}
                     </div>
                     <div className="w-full">
                         {isClick ? <CurriculumForm fetchCurriculums={fetchCurriculums} handleClick={handleClick} className="w-full"></CurriculumForm> : <></>}
                     </div>
-                    {!isNull ? Curriculums.map((curriculum: Curriculum) =>
+                    {!isNull ? curriculums.map((curriculum: Curriculum) =>
                         <>
                             <div className="border rounded mycurriculum text-sm mt-1" key={curriculum.id}>
                                 <Link href={"/main/curriculum/" + curriculum.id}>
                                     <div className="mycurriculum mt-1">
-                                        <span>{curriculum.name}</span>
-                                        <span className="text-sm">{curriculum.host.nickname}</span>
+                                        <div className="itemco">
+                                        <span className="item">{curriculum.name}</span>
+                                        </div>
+                                        <span className="text-xs">{curriculum.host.nickname}</span>
                                     </div>
                                     <div className="mt-1">
                                         <span >{formatDate(curriculum.startDate)}~</span>
@@ -118,7 +127,7 @@ export default function Main() {
             <div className="w-full ml-4">
                 <CalenderHeader currentMonth={currentMonth} preMonth={preMonth} nextMonth={nextMonth} />
                 <CalenderDays />
-                <CalenderBody currentMonth={currentMonth} selectedDate={seletcedDate} />
+                <CalenderBody onDateClick={(day: any) => onDateClick} currentMonth={currentMonth} selectedDate={selectedDate} curriculums={curriculums}/>
             </div>
         </div>
     )
