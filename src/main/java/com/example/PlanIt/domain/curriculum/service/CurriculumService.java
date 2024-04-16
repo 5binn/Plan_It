@@ -31,6 +31,43 @@ public class CurriculumService {
                         curriculumRepository.findAll()
                 );
     }
+    public RsData<List<Curriculum>> getCurriculumsByUsername(String username) {
+        return curriculumRepository.findCurriculumsByHostOrGuestUsername(username).isEmpty() ?
+                RsData.of(
+                        "F-1U",
+                        "데이터 없음"
+                ) :
+                RsData.of(
+                        "S-1U",
+                        "성공",
+                        curriculumRepository.findCurriculumsByHostUsername(username)
+                );
+    }
+
+    public RsData<List<Curriculum>> getCurriculumsByHost(String username) {
+        return curriculumRepository.findCurriculumsByHostUsername(username).isEmpty() ?
+                RsData.of(
+                        "F-1H",
+                        "데이터 없음"
+                ) :
+                RsData.of(
+                        "S-1H",
+                        "성공",
+                        curriculumRepository.findCurriculumsByHostUsername(username)
+                );
+    }
+    public RsData<List<Curriculum>> getCurriculumsByGuest(String username) {
+        return curriculumRepository.findCurriculumsByGuestUsername(username).isEmpty() ?
+                RsData.of(
+                        "F-1G",
+                        "데이터 없음"
+                ) :
+                RsData.of(
+                        "S-1G",
+                        "성공",
+                        curriculumRepository.findCurriculumsByGuestUsername(username)
+                );
+    }
 
     public RsData<Curriculum> getCurriculumById(Long id) {
         return curriculumRepository.findById(id).map((curriculum) -> RsData.of(
@@ -42,6 +79,8 @@ public class CurriculumService {
                 "%d번 데이터 없음".formatted(id)
         ));
     }
+
+
 
     @Transactional
     public RsData<Curriculum> create(String name, SiteUser host, LocalDate startDate, LocalDate endDate) {

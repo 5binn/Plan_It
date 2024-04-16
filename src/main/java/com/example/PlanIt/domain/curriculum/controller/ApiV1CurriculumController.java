@@ -43,6 +43,55 @@ public class ApiV1CurriculumController {
         );
     }
 
+    @GetMapping("/user")
+    public RsData<Response.getCurriculums> getCurriculumsByUsername() {
+        RsData<List<Curriculum>> rsData = this.curriculumService.getCurriculumsByUsername(rq.getMember().getUsername());
+        if (rsData.isFail()) {
+            return (RsData) rsData;
+        }
+        List<CurriculumDto> curriculumDtoList = new ArrayList<>();
+        for (Curriculum c : rsData.getData()) {
+            curriculumDtoList.add(new CurriculumDto(c));
+        }
+        return RsData.of(
+                rsData.getResultCode(),
+                rsData.getMessage(),
+                new Response.getCurriculums(curriculumDtoList)
+        );
+    }
+
+    @GetMapping("/host")
+    public RsData<Response.getCurriculums> getCurriculumsByHost() {
+        RsData<List<Curriculum>> rsData = this.curriculumService.getCurriculumsByHost(rq.getMember().getUsername());
+        if (rsData.isFail()) {
+            return (RsData) rsData;
+        }
+        List<CurriculumDto> curriculumDtoList = new ArrayList<>();
+        for (Curriculum c : rsData.getData()) {
+            curriculumDtoList.add(new CurriculumDto(c));
+        }
+        return RsData.of(
+                rsData.getResultCode(),
+                rsData.getMessage(),
+                new Response.getCurriculums(curriculumDtoList)
+        );
+    }
+    @GetMapping("/guest")
+    public RsData<Response.getCurriculums> getCurriculumsByGuest() {
+        RsData<List<Curriculum>> rsData = this.curriculumService.getCurriculumsByGuest(rq.getMember().getUsername());
+        if (rsData.isFail()) {
+            return (RsData) rsData;
+        }
+        List<CurriculumDto> curriculumDtoList = new ArrayList<>();
+        for (Curriculum c : rsData.getData()) {
+            curriculumDtoList.add(new CurriculumDto(c));
+        }
+        return RsData.of(
+                rsData.getResultCode(),
+                rsData.getMessage(),
+                new Response.getCurriculums(curriculumDtoList)
+        );
+    }
     @GetMapping("/{id}")
     public RsData<Response.getCurriculum> getCurriculum(@PathVariable("id") Long id) {
         RsData<Curriculum> rsData = this.curriculumService.getCurriculumById(id);

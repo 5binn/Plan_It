@@ -1,3 +1,8 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
 .container {
     display: flex;
     width: 100%;
@@ -13,6 +18,18 @@
     font-size: xx-large;
 }
 
+.top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.layout {
+    display: flex;
+    width: 15%;
+    font-size: xx-large;
+    align-items: flex-start;
+    flex-direction: row;
+}
 
 
 .right {
@@ -66,7 +83,29 @@
     width: 55%;
 }
 
-.loginLink {
+.calenderHeader {
+    display: flex;
+    justify-content: center;
+}
 
+.weeks {
+    display: flex;
+    justify-content: space-around;
+    font: bold;
+    width: 100%;
+}
 
+.days {
+    font: bold;
+    height: 100px;
+    width: 100%;
+}
+
+.disabled {
+    color: rgb(195, 195, 195);
+}
+
+.mycurriculum {
+    display: flex;
+    justify-content: space-between;
 }

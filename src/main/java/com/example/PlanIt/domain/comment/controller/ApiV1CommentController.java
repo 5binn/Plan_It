@@ -11,6 +11,7 @@ import com.example.PlanIt.domain.schedule.entity.ScheduleForm;
 import com.example.PlanIt.domain.schedule.service.ScheduleService;
 import com.example.PlanIt.domain.user.entity.SiteUser;
 import com.example.PlanIt.domain.user.service.UserService;
+import com.example.PlanIt.global.request.Rq;
 import com.example.PlanIt.global.rsData.RsData;
 import com.example.PlanIt.global.util.Response;
 import com.example.PlanIt.global.util.Util;
@@ -28,6 +29,7 @@ public class ApiV1CommentController {
     private final CommentService commentService;
     private final ScheduleService scheduleService;
     private final UserService userService;
+    private final Rq rq;
 
 
     @GetMapping("/schedule/{id}") //스케줄 ID
@@ -62,7 +64,7 @@ public class ApiV1CommentController {
         if (scheduleRsData.isFail()) {
             return (RsData) scheduleRsData;
         }
-        SiteUser author = userService.getUserById(1L).getData(); //임시
+        SiteUser author = rq.getMember();
         RsData<Comment> commentRsData = commentService.create(scheduleRsData.getData(), author, commentForm.getContent());
         if (commentRsData.isFail()) {
             return (RsData) commentRsData;
