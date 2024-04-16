@@ -35,6 +35,9 @@ public class CurriculumDto {
         this.modifiedDate = curriculum.getModifiedDate();
     }
     public List<GuestDto> toDtoList(List<Guest> guests) {
+        if(guests == null){
+            return null;
+        }
         List<GuestDto> guestDtoList = new ArrayList<>();
         for (Guest g : guests) {
             guestDtoList.add(new GuestDto(g.getCurriculum(), g.getUser(), g));

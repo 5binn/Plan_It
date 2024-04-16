@@ -40,10 +40,10 @@ export default function ScheduleForm({ fetchSchedules, id }: any) {
             {/* {isClick ? ( */}
             <form onSubmit={create}>
                 <label >내용</label>
-                <input type="text" name="content" value={schedule.content} onChange={handleChange} />
+                <input className="border w-full" type="text" name="content" value={schedule.content} onChange={handleChange} />
                 <label >일자</label>
-                <input type="date" name="date" value={schedule.date} onChange={handleChange} />
-                <button type="submit">등록</button>
+                <input className="border w-full" type="date" name="date" value={schedule.date} onChange={handleChange} />
+                <button className="border w-full" type="submit">등록</button>
             </form>
         </div>
     )

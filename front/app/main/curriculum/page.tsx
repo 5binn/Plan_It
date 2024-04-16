@@ -35,7 +35,6 @@ export default function Curriculum() {
     return (
         <>
             모임관리
-            <CurriculumForm fetchCurriculums={fetchCurriculums} />
             {!isNull ? curriculumList.map((curriculum: Curriculum) =>
                 <li key={curriculum.id}>
                     <Link href={"/main/curriculum/" + curriculum.id}>{curriculum.name}|</Link>

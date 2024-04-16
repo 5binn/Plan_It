@@ -1,7 +1,7 @@
 import { addDays, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, parse, startOfMonth, startOfWeek } from "date-fns"
 import "../../styles.css"
 
-export const CalenderBody = ({ currentMonth, selectedDate, onDateClick }: any) => {
+export const CalenderBody = ({ currentMonth, selectedDate }: any) => {
 
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
@@ -25,7 +25,7 @@ export const CalenderBody = ({ currentMonth, selectedDate, onDateClick }: any) =
                             : format(currentMonth, 'M') !== format(day, 'M')
                     }`}
                     key={day}
-                    onClick={onDateClick()}
+                    // onClick={onDateClick()}
                 >
                     <span
                         className={`m-3 ${ format(currentMonth, 'M') !== format(day, 'M')

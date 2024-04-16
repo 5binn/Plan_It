@@ -4,6 +4,7 @@ import com.example.PlanIt.domain.curriculum.dto.CurriculumDto;
 import com.example.PlanIt.domain.curriculum.entity.Curriculum;
 import com.example.PlanIt.domain.curriculum.entity.CurriculumForm;
 import com.example.PlanIt.domain.curriculum.service.CurriculumService;
+import com.example.PlanIt.domain.guest.service.GuestService;
 import com.example.PlanIt.domain.user.entity.SiteUser;
 import com.example.PlanIt.domain.user.service.UserService;
 import com.example.PlanIt.global.request.Rq;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApiV1CurriculumController {
     private final CurriculumService curriculumService;
-    private final UserService userService;
+    private final GuestService guestService;
     private final Rq rq;
 
 
@@ -78,7 +79,7 @@ public class ApiV1CurriculumController {
     }
     @GetMapping("/guest")
     public RsData<Response.getCurriculums> getCurriculumsByGuest() {
-        RsData<List<Curriculum>> rsData = this.curriculumService.getCurriculumsByGuest(rq.getMember().getUsername());
+        RsData<List<Curriculum>> rsData = this.curriculumService.getCurriculumsByGuestApproved(rq.getMember().getUsername());
         if (rsData.isFail()) {
             return (RsData) rsData;
         }
@@ -92,6 +93,25 @@ public class ApiV1CurriculumController {
                 new Response.getCurriculums(curriculumDtoList)
         );
     }
+
+    @GetMapping("/wait")
+    public RsData<Response.getCurriculums> getCurriculumsByGuestWait() {
+        RsData<List<Curriculum>> rsData = this.curriculumService.getCurriculumsByGuestWait(rq.getMember().getUsername());
+        if (rsData.isFail()) {
+            return (RsData) rsData;
+        }
+        List<CurriculumDto> curriculumDtoList = new ArrayList<>();
+        for (Curriculum c : rsData.getData()) {
+            curriculumDtoList.add(new CurriculumDto(c));
+        }
+        return RsData.of(
+                rsData.getResultCode(),
+                rsData.getMessage(),
+                new Response.getCurriculums(curriculumDtoList)
+        );
+    }
+
+
     @GetMapping("/{id}")
     public RsData<Response.getCurriculum> getCurriculum(@PathVariable("id") Long id) {
         RsData<Curriculum> rsData = this.curriculumService.getCurriculumById(id);
@@ -113,6 +133,7 @@ public class ApiV1CurriculumController {
         if (rsData.isFail()) {
             return (RsData) rsData;
         }
+        guestService.own(rsData.getData(), rq.getMember());
         return RsData.of(
                 rsData.getResultCode(),
                 rsData.getMessage(),

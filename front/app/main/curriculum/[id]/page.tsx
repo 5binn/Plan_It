@@ -84,7 +84,7 @@ export default function Id() {
 
     
     return (
-        <>
+        <div className="text-lg">
             모임 상세
             <h1>{curriculum?.id}번 / NAME : {curriculum?.name}</h1>
             <h3>시작일 :{curriculum?.startDate}</h3>
@@ -117,7 +117,7 @@ export default function Id() {
                     <span >{guest.invite}</span>
                 </li>
             ) : <></>}
-        </>
+        </div>
     )
 }
 

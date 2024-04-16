@@ -112,6 +112,15 @@ public class GuestService {
             );
         }
     }
+    @Transactional
+    public void own(Curriculum curriculum, SiteUser user) {
+            Guest guest = Guest.builder()
+                    .curriculum(curriculum)
+                    .user(user)
+                    .invite(true)
+                    .build();
+            guestRepository.save(guest);
+    }
 
     @Transactional
     public RsData<Guest> reject(Long id) {

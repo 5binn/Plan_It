@@ -10,6 +10,7 @@ import com.example.PlanIt.domain.guest.entity.GuestForm;
 import com.example.PlanIt.domain.guest.service.GuestService;
 import com.example.PlanIt.domain.user.entity.SiteUser;
 import com.example.PlanIt.domain.user.service.UserService;
+import com.example.PlanIt.global.request.Rq;
 import com.example.PlanIt.global.rsData.RsData;
 import com.example.PlanIt.global.util.Response;
 import com.example.PlanIt.global.util.Util;
@@ -29,6 +30,7 @@ public class ApiV1GuestController {
     private final GuestService guestService;
     private final CurriculumService curriculumService;
     private final UserService userService;
+    private final Rq rq;
 
     @GetMapping("")
     public RsData<Response.getGuests> getGuests() {
@@ -112,6 +114,9 @@ public class ApiV1GuestController {
         RsData<Curriculum> curriculumRsData = curriculumService.getCurriculumById(curriculumId);
         if (curriculumRsData.isFail()) {
             return (RsData) curriculumRsData;
+        }
+        if (curriculumRsData.getData().getHost().getUsername().equals(rq.getMember().getUsername())) {
+            return RsData.of("F-3","본인은 초대X");
         }
         RsData<SiteUser> userRsData = userService.getUserById(guestForm.getUserId());
         if (userRsData.isFail()) {

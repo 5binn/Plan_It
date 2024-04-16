@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Cookies, useCookies } from "react-cookie";
 import { CookiesProvider } from "react-cookie";
 import LoginCheck from "./loginCheck";
-
+import "./styles.css"
 
 export default function RootLayout({
   children,
@@ -18,7 +18,7 @@ export default function RootLayout({
 
   return (
     <html lang="ko">
-      <body >
+      <body className="w-full">
         {children}
       </body>
     </html>

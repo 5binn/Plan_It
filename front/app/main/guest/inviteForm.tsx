@@ -40,8 +40,8 @@ export default function InviteForm({ fetchWaitingGuests, id }: any) {
             {/* {isClick ? ( */}
             <form onSubmit={create}>
                 <label >ID</label>
-                <input type="number" name="userId" value={guestId.userId} onChange={handleChange} />
-                <button type="submit">초대</button>
+                <input className="border w-full" type="number" name="userId" value={guestId.userId} onChange={handleChange} />
+                <button className="border w-full" type="submit">초대</button>
             </form>
         </div>
     )

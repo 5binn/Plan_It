@@ -34,16 +34,21 @@ public class NotProd {
             SiteUser admin = userService.create("admin", password, "관리자","admin@test.com").getData();
 
             Curriculum curriculum1 = curriculumService.create("이름1",user1, LocalDate.now(), LocalDate.now().plusDays(1L)).getData();
+            guestService.own(curriculum1,user1);
             Curriculum curriculum2 = curriculumService.create("이름2",user1, LocalDate.now(), LocalDate.now().plusDays(2L)).getData();
+            guestService.own(curriculum2,user1);
             Curriculum curriculum3 = curriculumService.create("이름3",user2, LocalDate.now(), LocalDate.now().plusDays(3L)).getData();
+            guestService.own(curriculum3,user2);
             Curriculum curriculum4 = curriculumService.create("이름4",user2, LocalDate.now(), LocalDate.now().plusDays(4L)).getData();
+            guestService.own(curriculum4,user2);
             Curriculum curriculum5 = curriculumService.create("이름5",admin, LocalDate.now(), LocalDate.now().plusDays(5L)).getData();
+            guestService.own(curriculum5,admin);
 
             //커리큘럼에 유저를 초대
-            guestService.invite(curriculum1, user1);
             guestService.invite(curriculum1, user2);
+            guestService.invite(curriculum1, admin);
             guestService.invite(curriculum2, user1);
-            guestService.invite(curriculum2, user2);
+            guestService.invite(curriculum2, admin);
             guestService.invite(curriculum3, user1);
 
             Schedule schedule1 = scheduleService.create(curriculum1, "일정 내용입니다1", LocalDate.now().plusDays(1L)).getData();

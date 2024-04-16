@@ -56,16 +56,28 @@ public class CurriculumService {
                         curriculumRepository.findCurriculumsByHostUsername(username)
                 );
     }
-    public RsData<List<Curriculum>> getCurriculumsByGuest(String username) {
-        return curriculumRepository.findCurriculumsByGuestUsername(username).isEmpty() ?
+    public RsData<List<Curriculum>> getCurriculumsByGuestApproved(String username) {
+        return curriculumRepository.findCurriculumsByGuestUsernameApproved(username).isEmpty() ?
                 RsData.of(
-                        "F-1G",
+                        "F-1GA",
                         "데이터 없음"
                 ) :
                 RsData.of(
-                        "S-1G",
+                        "S-1GA",
                         "성공",
-                        curriculumRepository.findCurriculumsByGuestUsername(username)
+                        curriculumRepository.findCurriculumsByGuestUsernameApproved(username)
+                );
+    }
+    public RsData<List<Curriculum>> getCurriculumsByGuestWait(String username) {
+        return curriculumRepository.findCurriculumsByGuestUsernameWait(username).isEmpty() ?
+                RsData.of(
+                        "F-1GW",
+                        "데이터 없음"
+                ) :
+                RsData.of(
+                        "S-1GW",
+                        "성공",
+                        curriculumRepository.findCurriculumsByGuestUsernameWait(username)
                 );
     }
 

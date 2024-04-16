@@ -30,17 +30,17 @@ export default function Login({ }) {
             <form onSubmit={onLogin} className='loginBox'>
                 <div className='loginElement'>
                     <label className="loginLabel" > ID</label>
-                    <input className='loginInput' type="text" name="username" value={user.username} onChange={handleChange} />
+                    <input className='loginInput rounded' type="text" name="username" value={user.username} onChange={handleChange} />
                 </div>
                 <div className='loginElement'>
                     <label className='loginLabel'>PW</label>
-                    <input className='loginInput' type="password" name="password" value={user.password} onChange={handleChange} />
+                    <input className='loginInput rounded' type="password" name="password" value={user.password} onChange={handleChange} />
                 </div>
-                <button className='loginBtn' type="submit">로그인</button>
+                <button className='rounded loginBtn border font-bold  bg-white hover:bg-color-white' type="submit">로그인</button>
             </form>
             <div className='loginBottom'>
-                <Link className='loginLink' href={"/"}>회원가입</Link >
-                <Link className='loginLink' href={"/"}>ID/PW 찾기</Link >
+                <Link className='rounded loginLink border bg-white p-1' href={"/"}>회원가입</Link >
+                <Link className='rounded loginLink border bg-white p-1' href={"/"}>ID/PW 찾기</Link >
             </div>
         </div>
     )
