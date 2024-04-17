@@ -113,10 +113,15 @@
     width: 100%;
 }
 
+.invite {
+    display: flex;
+    flex-direction: column;
+}
+
 
 .btngroup {
     display: block;
-    width: 100%;
+    width: 32px;
 }
 
 .item {

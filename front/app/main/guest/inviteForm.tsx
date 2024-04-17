@@ -3,23 +3,67 @@
 import { useEffect, useState } from "react";
 import api from "../../util/api";
 import { Guest } from "@/app/util/type";
+import Link from "next/link";
 
 
 
-export default function InviteForm({ guestList, fetchWaitingGuests, curriculumId }: any) {
+export default function InviteForm({ curriculum, username, curriculumId }: any) {
 
     const [keyword, setKeyword] = useState(String);
     const [findUser, setFindUser] = useState([]);
-    const [usernameList, setUsernameList] = useState<string[]>([]);
+
+    const [approvedGuestList, setApprovedGuestList] = useState<Guest[]>([]);
+    const [waitingGuestList, setWaitingGuestList] = useState<Guest[]>([]);
+    const [guestList, setGuestList] = useState<Guest[]>([]);
+    const [usernameList, setUsernameList] = useState<String[]>([]);
+
+    const [approvedGuestIsNull, setApprovedGuestIsNull] = useState(false);
+    const [waitingGuestIsNull, setWaitingGuestIsNull] = useState(false);
+
+
+    const fetchWaitingGuests = () => {
+        api.get(`/api/v1/guests/curriculum/${curriculumId}/wait`)
+            .then((response) => {
+                setWaitingGuestList(response.data.data.guestList);
+
+                setWaitingGuestIsNull(false);
+            })
+            .catch(err => {
+                setWaitingGuestIsNull(true);
+            });
+
+    }
+
+    const fetchApprovedGuests = () => {
+        api.get(`/api/v1/guests/curriculum/${curriculumId}/approve`)
+            .then((response) => {
+                setApprovedGuestList(response.data.data.guestList);
+                setApprovedGuestIsNull(false);
+            })
+            .catch(err => {
+                setApprovedGuestIsNull(true);
+            });
+    }
 
     useEffect(() => {
-        const list: string[] = [];
-        guestList.forEach((guest: any) => {
-            list.push(guest.username);
-        });
-        setUsernameList(list);
-        console.log(usernameList);
-    })
+        fetchWaitingGuests();
+        console.log(waitingGuestList);
+        fetchApprovedGuests();
+        fetchGuests();
+
+    }, [curriculumId]);
+
+    const fetchGuests = () => {
+        api.get(`/api/v1/guests/curriculum/${curriculumId}`)
+            .then((response) => {
+                setGuestList(response.data.data.guestList);
+                const list: string[] = [];
+                guestList.forEach((guest: any) => {
+                    list.push(guest.username);
+                });
+                setUsernameList(list);
+            })
+    }
 
     const search = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -40,6 +84,7 @@ export default function InviteForm({ guestList, fetchWaitingGuests, curriculumId
         const response = await api.post(`/api/v1/guests/${curriculumId}?userId=${id}`);
         if (response.status == 200) {
             fetchWaitingGuests();
+            setFindUser([]);
         } else {
             alert('초대에 실패했습니다.');
         }
@@ -51,8 +96,18 @@ export default function InviteForm({ guestList, fetchWaitingGuests, curriculumId
 
     return (
         <div>
-            {/* {!isClick ? (<button onClick={handleClick}>등록</button>) : (<></>)} */}
-            {/* {isClick ? ( */}
+            {!approvedGuestIsNull ? approvedGuestList.map((guest: Guest) => {
+                return guest.userName !== curriculum?.host.username ? (
+                    <li key={guest.id}>
+                        <Link href={"/curriculum/" + guest.id}>{guest.id}|</Link>
+                        <span>{guest.userName}|</span>
+                        <span>{guest.invite}</span>
+                    </li>
+                ) : (
+                    <div key={guest.id}></div>
+                );
+            }) : <></>}
+
             <form onSubmit={search}>
                 <input className="border w-full" type="text" name="keyword" value={keyword} onChange={handleSearchChange} />
                 <button type="submit" className="border w-full">검색</button>
@@ -62,14 +117,30 @@ export default function InviteForm({ guestList, fetchWaitingGuests, curriculumId
                     <form onSubmit={(e) => invite(e, user.id)}>
                         <span>ID:{user.username}/</span>
                         <span>닉네임:{user.nickname}</span>
-                        {usernameList.includes(user.username) ?
-                            <button className="border rounded-md" type="submit" >초대</button>
-                            : <></>
-                        }
-                        <button className="border rounded-md" type="submit" >초대</button>
+                        {guestList.find((guest: Guest) =>
+                            guest.userName == user.username
+                        ) ? <></>
+                            : <button className="border rounded-md" type="submit">초대</button>}
                     </form>
                 </div>
             )) : <></>}
+
+            {guestList.map((guest: Guest) =>
+                <li >
+                    <span >{guest.userName}|</span>
+                    <span >{guest.invite}|</span>
+                </li>)}
+
+            {curriculum?.host.username == username ? <div>
+                <h2>승인대기</h2>
+                {!waitingGuestIsNull ? waitingGuestList.map((guest: Guest) =>
+                    <li key={guest.id}>
+                        <Link href={"/curriculum/" + guest.id}>{guest.id}|</Link>
+                        <span >{guest.userName}|</span>
+                        <span >{guest.invite}</span>
+                    </li>
+                ) : <></>}
+            </div> : <></>}
         </div>
     )
 }

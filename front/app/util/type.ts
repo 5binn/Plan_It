@@ -15,6 +15,7 @@ export interface Host {
 
 export interface Guest {
     id: number;
+    curriculumName: string;
     userName: string;
     invite: string;
 }

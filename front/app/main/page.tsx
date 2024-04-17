@@ -7,7 +7,7 @@ import { CalenderDays } from "./calender/days";
 import { CalenderBody } from "./calender/body";
 import "../styles.css"
 import api from "../util/api";
-import { Curriculum } from "../util/type";
+import { Curriculum, Guest } from "../util/type";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import CurriculumForm from "./curriculum/curriculumForm";
@@ -18,7 +18,11 @@ export default function Main() {
     const router = useRouter();
 
     const [curriculums, setCurriculums] = useState([]);
-    const [isNull, setIsNull] = useState(Boolean);
+    const [isNullC, setIsNullC] = useState(Boolean);
+
+    const [invites, setInvites] = useState([]);
+    const [isNullI, setIsNullI] = useState(Boolean);
+
     const [isClick, setIsClick] = useState(Boolean);
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -28,9 +32,19 @@ export default function Main() {
         api.get('/api/v1/curriculums/guest')
             .then(response => {
                 setCurriculums(response.data.data.curriculumList);
-                setIsNull(false);
+                setIsNullC(false);
             }).catch(err => {
-                setIsNull(true)
+                setIsNullC(true)
+            })
+    }
+
+    const fetchInvites = () => {
+        api.get('/api/v1/guests/user')
+            .then(response => {
+                setInvites(response.data.data.guestList);
+                setIsNullI(false);
+            }).catch(err => {
+                setIsNullI(true);
             })
     }
 
@@ -55,6 +69,7 @@ export default function Main() {
 
     useEffect(() => {
         fetchCurriculums();
+        fetchInvites();
         console.log(username);
     }, [])
 
@@ -62,6 +77,17 @@ export default function Main() {
     const onDelete = async (id: number) => {
         await api.delete(`/api/v1/curriculums/${id}`)
         fetchCurriculums();
+    }
+
+    const onApprove = async (id: Number) => {
+        await api.patch(`/api/v1/guests/${id}`)
+        fetchCurriculums();
+        fetchInvites();
+    }
+
+    const onReject = async (id: Number) => {
+        await api.delete(`/api/v1/guests/${id}`)
+        fetchInvites();
     }
 
     const handleClick = () => {
@@ -88,19 +114,19 @@ export default function Main() {
                 <div className="block m-1">
                     <div className="mycurriculum mt-2">
                         <span className="text-lg font-bold ml-0.5">내 모임</span>
-                        {!isClick? <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>+</button>
-                        :<button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>x</button>}
+                        {!isClick ? <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>+</button>
+                            : <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>x</button>}
                     </div>
                     <div className="w-full">
                         {isClick ? <CurriculumForm fetchCurriculums={fetchCurriculums} handleClick={handleClick} className="w-full"></CurriculumForm> : <></>}
                     </div>
-                    {!isNull ? curriculums.map((curriculum: Curriculum) =>
+                    {!isNullC ? curriculums.map((curriculum: Curriculum) =>
                         <>
                             <div className="border rounded mycurriculum text-sm mt-1 pl-1" key={curriculum.id}>
                                 <Link href={"/main/curriculum/" + curriculum.id}>
                                     <div className="mycurriculum mt-1">
                                         <div className="itemco">
-                                        <span className="item">{curriculum.name}</span>
+                                            <span className="item">{curriculum.name}</span>
                                         </div>
                                         <span className="text-xs">{curriculum.host.nickname}</span>
                                     </div>
@@ -111,7 +137,7 @@ export default function Main() {
                                 </Link>
                                 <div className="m-1">
                                     {username == curriculum.host.username ?
-                                        <div>
+                                        <div className="btngroup">
                                             <Link className="border rounded mt-1" href={"/main/curriculum/" + curriculum.id + "/edit"}>수정</Link>
                                             <button className="border rounded mt-1" onClick={() => onDelete(curriculum.id)}>삭제</button>
                                         </div>
@@ -122,15 +148,32 @@ export default function Main() {
 
                         </>
                     ) : <span className="text-lg">모임이 없습니다.</span>}
-                    <div className="mycurriculum mt-2">
-                        <div>asdasd</div>
+                    <div className="invite mt-2">
+                        {!isNullI ?<div className="text-lg font-bold ml-0.5">초대메세지</div>: <></>}
+                        {!isNullI ? invites.map((invite: Guest) =>
+                            <div className="border rounded invite text-sm mt-1 pl-1" key={invite.id}>
+                                <div className="mycurriculum mt-1 w-full">
+                                    <div className="itemco">
+                                        <span className="item">{invite.curriculumName}</span>
+                                    </div>
+                                    {username == invite.userName ?
+                                        <div className="btngroup m-1">
+                                            <button className="border rounded mt-1" onClick={() => onApprove(invite.id)}>수락</button>
+                                            <button className="border rounded mt-1" onClick={() => onReject(invite.id)}>거절</button>
+                                        </div>
+                                        : <div>
+                                        </div>}
+                                </div>
+                                    
+                            </div>
+                        ) : <></>}
                     </div>
                 </div>
             </div>
             <div className="w-full ml-4">
                 <CalenderHeader currentMonth={currentMonth} preMonth={preMonth} nextMonth={nextMonth} />
                 <CalenderDays />
-                <CalenderBody onDateClick={(day: any) => onDateClick} currentMonth={currentMonth} selectedDate={selectedDate} curriculums={curriculums}/>
+                <CalenderBody onDateClick={(day: any) => onDateClick} currentMonth={currentMonth} selectedDate={selectedDate} curriculums={curriculums} />
             </div>
         </div>
     )
