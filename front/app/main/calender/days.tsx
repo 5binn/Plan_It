@@ -4,7 +4,7 @@ import "../../styles.css"
 export const CalenderDays = () => {
 
     const days = [];
-    const date = ['월', '화', '수', '목', '금', '토', '일'];
+    const date = ['일', '월', '화', '수', '목', '금', '토' ];
 
     for (let i = 0; i < 7; i++) {
         days.push(

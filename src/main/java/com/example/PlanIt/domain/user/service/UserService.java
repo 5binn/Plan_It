@@ -23,8 +23,8 @@ public class UserService {
     private final JwtProvider jwtProvider;
 
 
-    public RsData<List<SiteUser>> getUsers() {
-        return userRepository.findAll().isEmpty() ?
+    public RsData<List<SiteUser>> searchUsers(String keyword) {
+        return userRepository.findByKeyword(keyword).isEmpty() ?
                 RsData.of(
                         "F-1",
                         "데이터 없음"
@@ -32,7 +32,7 @@ public class UserService {
                 RsData.of(
                         "S-1",
                         "성공",
-                        userRepository.findAll()
+                        userRepository.findByKeyword(keyword)
                 );
     }
 

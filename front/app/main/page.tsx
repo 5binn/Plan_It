@@ -96,7 +96,7 @@ export default function Main() {
                     </div>
                     {!isNull ? curriculums.map((curriculum: Curriculum) =>
                         <>
-                            <div className="border rounded mycurriculum text-sm mt-1" key={curriculum.id}>
+                            <div className="border rounded mycurriculum text-sm mt-1 pl-1" key={curriculum.id}>
                                 <Link href={"/main/curriculum/" + curriculum.id}>
                                     <div className="mycurriculum mt-1">
                                         <div className="itemco">
@@ -112,8 +112,8 @@ export default function Main() {
                                 <div className="m-1">
                                     {username == curriculum.host.username ?
                                         <div>
-                                            <Link className="border rounded" href={"/main/curriculum/" + curriculum.id + "/edit"}>수정</Link>
-                                            <button className="border rounded" onClick={() => onDelete(curriculum.id)}>삭제</button>
+                                            <Link className="border rounded mt-1" href={"/main/curriculum/" + curriculum.id + "/edit"}>수정</Link>
+                                            <button className="border rounded mt-1" onClick={() => onDelete(curriculum.id)}>삭제</button>
                                         </div>
                                         : <div>
                                         </div>}
@@ -121,7 +121,10 @@ export default function Main() {
                             </div>
 
                         </>
-                    ) : <>등록된 모임이 없습니다.</>}
+                    ) : <span className="text-lg">모임이 없습니다.</span>}
+                    <div className="mycurriculum mt-2">
+                        <div>asdasd</div>
+                    </div>
                 </div>
             </div>
             <div className="w-full ml-4">

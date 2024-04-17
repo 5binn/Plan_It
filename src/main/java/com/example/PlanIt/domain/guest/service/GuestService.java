@@ -30,8 +30,8 @@ public class GuestService {
                 );
     }
 
-    public RsData<List<Guest>> getGuestsByUserId(Long userId) {
-        return guestRepository.findGuestsByUserId(userId).isEmpty() ?
+    public RsData<List<Guest>> getWaitGuestsByUsername(String username) {
+        return guestRepository.findGuestsByUsernameFalse(username).isEmpty() ?
                 RsData.of(
                         "F-1U",
                         "데이터 없음"
@@ -39,7 +39,7 @@ public class GuestService {
                 RsData.of(
                         "S-1U",
                         "성공",
-                        guestRepository.findGuestsByUserId(userId)
+                        guestRepository.findGuestsByUsernameFalse(username)
                 );
     }
 

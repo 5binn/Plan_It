@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 public interface GuestRepository extends JpaRepository<Guest, Long> {
-    @Query("SELECT g FROM Guest g WHERE g.user.id = :userId")
-    List<Guest> findGuestsByUserId(@Param("userId") Long userId);
+    @Query("SELECT g FROM Guest g WHERE g.user.username = :username AND g.invite = false")
+    List<Guest> findGuestsByUsernameFalse(@Param("username") String username);
 
     @Query("SELECT g FROM Guest g WHERE g.curriculum.id = :curriculumId")
     List<Guest> findGuestsByCurriculumId(@Param("curriculumId") Long curriculumId);

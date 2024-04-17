@@ -5,6 +5,7 @@ import com.example.PlanIt.domain.curriculum.dto.CurriculumDto;
 import com.example.PlanIt.domain.curriculum.entity.Curriculum;
 import com.example.PlanIt.domain.guest.dto.GuestDto;
 import com.example.PlanIt.domain.schedule.dto.ScheduleDto;
+import com.example.PlanIt.domain.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -138,4 +139,10 @@ public class Response {
 
 
     //user
+    @Getter
+    @AllArgsConstructor
+    public static class getUsers {
+        private List<UserDto> userDtoList;
+    }
+
 }

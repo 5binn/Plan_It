@@ -83,9 +83,9 @@ public class ApiV1GuestController {
         );
     }
 
-    @GetMapping("/user/{id}")
-    public RsData<Response.getGuests> getGuestsByUserId(@PathVariable("id") Long id) {
-        RsData<List<Guest>> rsData = this.guestService.getGuestsByUserId(id);
+    @GetMapping("/user")
+    public RsData<Response.getGuests> getGuestsByUserId() {
+        RsData<List<Guest>> rsData = this.guestService.getWaitGuestsByUsername(rq.getMember().getUsername());
         if (rsData.isFail()) {
             return (RsData) rsData;
         }
@@ -110,15 +110,15 @@ public class ApiV1GuestController {
     }
 
     @PostMapping("/{id}") //커리큘럼 ID
-    public RsData<Response.inviteGuest> inviteGuest(@PathVariable("id") Long curriculumId, @Valid @RequestBody GuestForm guestForm) {
+    public RsData<Response.inviteGuest> inviteGuest(@PathVariable("id") Long curriculumId, @RequestParam(value = "userId", defaultValue = "") Long userId) {
         RsData<Curriculum> curriculumRsData = curriculumService.getCurriculumById(curriculumId);
         if (curriculumRsData.isFail()) {
             return (RsData) curriculumRsData;
         }
-        if (curriculumRsData.getData().getHost().getUsername().equals(rq.getMember().getUsername())) {
-            return RsData.of("F-3","본인은 초대X");
-        }
-        RsData<SiteUser> userRsData = userService.getUserById(guestForm.getUserId());
+//        if (curriculumRsData.getData().getHost().getUsername().equals(rq.getMember().getUsername())) {
+//            return RsData.of("F-3","본인은 초대X");
+//        }
+        RsData<SiteUser> userRsData = userService.getUserById(userId);
         if (userRsData.isFail()) {
             return (RsData) userRsData;
         }

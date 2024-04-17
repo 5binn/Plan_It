@@ -31,6 +31,13 @@ public class NotProd {
 
             SiteUser user1 = userService.create("user1", password, "TeachMAN","test1@test.com").getData();
             SiteUser user2 = userService.create("user2", password, "Yellow","test2@test.com").getData();
+            SiteUser user3 = userService.create("user3", password, "유저3","test2@test.com").getData();
+            SiteUser user4 = userService.create("user4", password, "유저4","test2@test.com").getData();
+            SiteUser user5 = userService.create("user5", password, "유저5","test2@test.com").getData();
+            SiteUser user6 = userService.create("user6", password, "유저6","test2@test.com").getData();
+            SiteUser user7 = userService.create("user7", password, "유저7","test2@test.com").getData();
+            SiteUser user8 = userService.create("user8", password, "유저8","test2@test.com").getData();
+            SiteUser user9 = userService.create("user9", password, "유저9","test2@test.com").getData();
             SiteUser admin = userService.create("admin", password, "관리자","admin@test.com").getData();
 
             Curriculum curriculum1 = curriculumService.create("TOEIC",user1, LocalDate.now(), LocalDate.now().plusDays(1L)).getData();

@@ -1,11 +1,14 @@
 package com.example.PlanIt.domain.user.controller;
 
+import com.example.PlanIt.domain.curriculum.dto.CurriculumDto;
+import com.example.PlanIt.domain.curriculum.entity.Curriculum;
 import com.example.PlanIt.domain.user.dto.UserDto;
 import com.example.PlanIt.domain.user.entity.SiteUser;
 import com.example.PlanIt.domain.user.entity.UserForm;
 import com.example.PlanIt.domain.user.service.UserService;
 import com.example.PlanIt.global.request.Rq;
 import com.example.PlanIt.global.rsData.RsData;
+import com.example.PlanIt.global.util.Response;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -13,6 +16,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,8 +27,20 @@ public class ApiV1UserController {
     private final Rq rq;
 
     @GetMapping("")
-    public RsData<List<SiteUser>> getUsers() {
-        return this.userService.getUsers();
+    public RsData<Response.getUsers> getUsers(@RequestParam(value = "kw", defaultValue = "") String kw) {
+        RsData<List<SiteUser>> rsData = this.userService.searchUsers(kw);
+        if (rsData.isFail()) {
+            return (RsData) rsData;
+        }
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (SiteUser u : rsData.getData()) {
+            userDtoList.add(new UserDto(u));
+        }
+        return RsData.of(
+                rsData.getResultCode(),
+                rsData.getMessage(),
+                new Response.getUsers(userDtoList)
+        );
     }
 
     @GetMapping("/{id}")
