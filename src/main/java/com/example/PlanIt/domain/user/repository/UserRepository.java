@@ -15,6 +15,9 @@ public interface UserRepository extends JpaRepository<SiteUser, Long> {
 
     Optional<SiteUser> findByRefreshToken(String refreshToken);
 
+    boolean existsByUsername(String username);
+    boolean existsByNickname(String nickname);
+    boolean existsByEmail(String email);
 
     @Query("SELECT u from SiteUser u WHERE "
             + "   u.nickname LIKE %:keyword% "

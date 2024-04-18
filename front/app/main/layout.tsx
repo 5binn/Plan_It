@@ -38,8 +38,8 @@ export default function MainLayout({ children, }: Readonly<{ children: React.Rea
 
 
     return (
-        <div className="m-4">
-            <div className="top pb-3">
+        <div className="container">
+            <div className="top pb-3 mt-3">
                 <div className="font-bold text-3xl">
                     <Link href="/main"><i className="fa-regular fa-calendar-check"></i>PlanIt</Link>
                 </div>
@@ -49,7 +49,7 @@ export default function MainLayout({ children, }: Readonly<{ children: React.Rea
                     <button onClick={handleLogout}> 로그아웃</button>
                 </div>
             </div>
-            <div className="container">
+            <div className="main">
                 {children}
             </div>
         </div>

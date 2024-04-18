@@ -22,7 +22,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
-
     public RsData<List<SiteUser>> searchUsers(String keyword) {
         return userRepository.findByKeyword(keyword).isEmpty() ?
                 RsData.of(
@@ -47,6 +46,15 @@ public class UserService {
         ));
     }
 
+    public boolean verificationUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+    public boolean verificationNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+    public boolean verificationEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
     @Transactional
     public RsData<SiteUser> create(String username, String password, String nickname, String email) {
 

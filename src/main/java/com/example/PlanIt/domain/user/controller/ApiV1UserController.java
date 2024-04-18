@@ -49,9 +49,25 @@ public class ApiV1UserController {
     }
 
     @PostMapping("")
-    public RsData<SiteUser> signIn(@Valid @RequestBody UserForm userForm) {
+    public RsData<SiteUser> signUp(@Valid @RequestBody UserForm userForm) {
         return userService.create(userForm.getUsername(), userForm.getPassword1(), userForm.getNickname(), userForm.getEmail());
     }
+
+    @PostMapping("/username")
+    public boolean checkId(@RequestParam(value = "id", defaultValue = "") String username) {
+        return userService.verificationUsername(username);
+    }
+
+    @PostMapping("/nickname")
+    public boolean checkNickname(@RequestParam(value = "nickname", defaultValue = "") String nickname) {
+        return userService.verificationNickname(nickname);
+    }
+
+    @PostMapping("/email")
+    public boolean checkEmail(@RequestParam(value = "email", defaultValue = "") String email) {
+        return userService.verificationEmail(email);
+    }
+
 
     @Getter
     @AllArgsConstructor
@@ -60,7 +76,7 @@ public class ApiV1UserController {
     }
 
     @GetMapping("/me")
-    public RsData<MeResponseBody> me () {
+    public RsData<MeResponseBody> me() {
         SiteUser siteUser = rq.getMember();
 
         return RsData.of(
@@ -85,7 +101,7 @@ public class ApiV1UserController {
     }
 
     @PostMapping("/login")
-    public RsData<LoginResponseBody> login (@Valid @RequestBody LoginRequestBody loginRequestBody) {
+    public RsData<LoginResponseBody> login(@Valid @RequestBody LoginRequestBody loginRequestBody) {
 
         RsData<UserService.AuthAndMakeTokensResponseBody> authAndMakeTokensRs = userService.authAndMakeTokens(loginRequestBody.getUsername(), loginRequestBody.getPassword());
 
@@ -93,7 +109,7 @@ public class ApiV1UserController {
         rq.setCrossDomainCookie("accessToken", authAndMakeTokensRs.getData().getAccessToken());
         rq.setCrossDomainCookie("refreshToken", authAndMakeTokensRs.getData().getRefreshToken());
 
-        return RsData.of(authAndMakeTokensRs.getResultCode(),authAndMakeTokensRs.getMessage(), new LoginResponseBody(new UserDto(authAndMakeTokensRs.getData().getSiteUser())));
+        return RsData.of(authAndMakeTokensRs.getResultCode(), authAndMakeTokensRs.getMessage(), new LoginResponseBody(new UserDto(authAndMakeTokensRs.getData().getSiteUser())));
     }
 
     @PostMapping("/logout")

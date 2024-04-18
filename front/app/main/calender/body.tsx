@@ -40,7 +40,7 @@ export const CalenderBody = ({ onDateClick, currentMonth, selectedDate, curricul
                     <div className="daycontainer mt-1 ml-1 text-sm">
                     {curriculums.map((curriculum: Curriculum) => (
                         isWithinInterval(day, { start: subDays(new Date(curriculum.startDate), 1), end: new Date(curriculum.endDate) }) &&
-                        <span className="item border rounded ml-1 pl-1" key={curriculum.id}>{curriculum.name}</span>
+                        <span className="calcuri truncate border rounded mt-1 ml-1 pl-1" key={curriculum.id}>{curriculum.name}</span>
                     ))}
                     </div>
                 </div>,

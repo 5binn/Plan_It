@@ -15,6 +15,7 @@ import CurriculumForm from "./curriculum/curriculumForm";
 
 export default function Main() {
 
+
     const router = useRouter();
 
     const [curriculums, setCurriculums] = useState([]);
@@ -107,13 +108,12 @@ export default function Main() {
             setSelectedDate(day);
         }
     };
-
     return (
-        <div className="container">
+        <div className="main">
             <div className="left layout mt-4 border rounded-lg">
-                <div className="block m-1">
-                    <div className="mycurriculum mt-2">
-                        <span className="text-lg font-bold ml-0.5">내 모임</span>
+                <div className="block m-2">
+                    <div className="mycurriculum">
+                        <span className="text-lg font-bold">내 모임</span>
                         {!isClick ? <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>+</button>
                             : <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>x</button>}
                     </div>
@@ -121,56 +121,43 @@ export default function Main() {
                         {isClick ? <CurriculumForm fetchCurriculums={fetchCurriculums} handleClick={handleClick} className="w-full"></CurriculumForm> : <></>}
                     </div>
                     {!isNullC ? curriculums.map((curriculum: Curriculum) =>
-                        <>
-                            <div className="border rounded mycurriculum text-sm mt-1 pl-1" key={curriculum.id}>
-                                <Link href={"/main/curriculum/" + curriculum.id}>
-                                    <div className="mycurriculum mt-1">
-                                        <div className="itemco">
-                                            <span className="item">{curriculum.name}</span>
-                                        </div>
-                                        <span className="text-xs">{curriculum.host.nickname}</span>
-                                    </div>
-                                    <div className="mt-1">
-                                        <span >{formatDate(curriculum.startDate)}~</span>
-                                        <span >{formatDate(curriculum.endDate)}</span>
-                                    </div>
-                                </Link>
-                                <div className="m-1">
-                                    {username == curriculum.host.username ?
-                                        <div className="btngroup">
-                                            <Link className="border rounded mt-1" href={"/main/curriculum/" + curriculum.id + "/edit"}>수정</Link>
-                                            <button className="border rounded mt-1" onClick={() => onDelete(curriculum.id)}>삭제</button>
-                                        </div>
-                                        : <div>
-                                        </div>}
+                        <div className="between border rounded text-sm mt-1 pl-1 pt-1 pb-1" key={curriculum.id}>
+                            <Link className="itemco ml-1" href={"/main/curriculum/" + curriculum.id}>
+                                <div className="itemco">
+                                    <span className="curiname truncate font-bold ">{curriculum.name}</span>
+                                    <span className="truncate text-xs">{curriculum.host.nickname}</span>
                                 </div>
+                                <div className="text-xs">
+                                    <span >{formatDate(curriculum.startDate)}~</span>
+                                    <span >{formatDate(curriculum.endDate)}</span>
+                                </div>
+                            </Link>
+                            <div className="ml-2 mr-1 ">
+                                {username == curriculum.host.username ?
+                                    <div className="btngroup text-xs">
+                                        <Link className="border rounded  p-1 hover:bg-gray-200" href={"/main/curriculum/" + curriculum.id + "/edit"}>수정</Link>
+                                        <button className="border rounded mt-1 p-1 hover:bg-gray-200" onClick={() => onDelete(curriculum.id)}>삭제</button>
+                                    </div>
+                                    : <div>
+                                    </div>}
                             </div>
-
-                        </>
+                        </div>
                     ) : <span className="text-lg">모임이 없습니다.</span>}
                     <div className="invite mt-2">
-                        {!isNullI ?<div className="text-lg font-bold ml-0.5">초대메세지</div>: <></>}
+                        {!isNullI ? <div className="text-lg font-bold ml-0.5">초대메세지</div> : <></>}
                         {!isNullI ? invites.map((invite: Guest) =>
-                            <div className="border rounded invite text-sm mt-1 pl-1" key={invite.id}>
-                                <div className="mycurriculum mt-1 w-full">
-                                    <div className="itemco">
-                                        <span className="item">{invite.curriculumName}</span>
-                                    </div>
-                                    {username == invite.userName ?
-                                        <div className="btngroup m-1">
-                                            <button className="border rounded mt-1" onClick={() => onApprove(invite.id)}>수락</button>
-                                            <button className="border rounded mt-1" onClick={() => onReject(invite.id)}>거절</button>
-                                        </div>
-                                        : <div>
-                                        </div>}
+                            <div className="between invitebtn border rounded text-sm mt-1 pl-1" key={invite.id}>
+                                <span className="invcuri truncate font-bold item">{invite.curriculumName}</span>
+                                <div className="invitebtn text-xs">
+                                    <button className="border rounded mt-1 mb-1 mr-1 p-1 hover:bg-gray-200" onClick={() => onApprove(invite.id)}>수락</button>
+                                    <button className="border rounded mt-1 mb-1 mr-1 p-1 hover:bg-gray-200" onClick={() => onReject(invite.id)}>거절</button>
                                 </div>
-                                    
                             </div>
                         ) : <></>}
                     </div>
                 </div>
             </div>
-            <div className="w-full ml-4">
+            <div className="w-full ml-4 mt-5">
                 <CalenderHeader currentMonth={currentMonth} preMonth={preMonth} nextMonth={nextMonth} />
                 <CalenderDays />
                 <CalenderBody onDateClick={(day: any) => onDateClick} currentMonth={currentMonth} selectedDate={selectedDate} curriculums={curriculums} />

@@ -36,11 +36,14 @@ export default function Login({ }) {
                     <label className='loginLabel'>PW</label>
                     <input className='loginInput rounded' type="password" name="password" value={user.password} onChange={handleChange} />
                 </div>
-                <button className='rounded loginBtn border font-bold  bg-white hover:bg-color-white' type="submit">로그인</button>
+                <button className="mt-2 w-full rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-200"
+                    type="submit">로그인</button>
             </form>
-            <div className='loginBottom'>
-                <Link className='rounded loginLink border bg-white p-1' href={"/"}>회원가입</Link >
-                <Link className='rounded loginLink border bg-white p-1' href={"/"}>ID/PW 찾기</Link >
+            <div className='loginBottom mt-3'>
+                <Link className=" rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    href={"/user/signup"}>회원가입</Link >
+                <Link className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    href={"/"}>ID/PW 찾기</Link >
             </div>
         </div>
     )

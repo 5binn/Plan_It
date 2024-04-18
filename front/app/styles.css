@@ -5,6 +5,8 @@
 
 .container {
     display: flex;
+    align-items: center;
+    flex-direction: column;
     height: 100vh;
 }
 
@@ -15,6 +17,7 @@
     align-items: center;
     flex-direction: column;
     font-size: xx-large;
+    height: 80%;
 }
 
 .top {
@@ -22,11 +25,19 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: lightgray solid 1px;
+    width: 1280px;
+}
+
+.main {
+    display: flex;
+    justify-content: space-between;
+    width: 1280px;
+    height: 100vh;
 }
 
 .layout {
     display: flex;
-    width: 15%;
+    width: 16%;
     align-content: flex-start;
     align-items: flex-start;
     flex-direction: row;
@@ -79,10 +90,9 @@
 }
 
 .loginBottom {
-    margin: 5px;
     display: flex;
-    justify-content: space-around;
-    width: 55%;
+    justify-content: space-between;
+    width: 40%;
 }
 
 .calenderHeader {
@@ -118,22 +128,45 @@
     flex-direction: column;
 }
 
+.between {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
 
 .btngroup {
-    display: block;
-    width: 32px;
+    display: flex;
+    flex-direction: column;
+}
+
+.invitebtn {
+    display: flex;
+    align-items: center;
 }
 
 .item {
-    width: 90%;
-    height: 20px;
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: block;
+}
+
+
+.curiname {
+    display: block;
+    width: 101px;
+}
+
+.calcuri {
+    display: block;
+    width: 120px;
+}
+.invcuri {
+    display: block;
+    width: 75px;
 }
 
 .itemco {
-    width: 78px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .daycontainer {
@@ -142,3 +175,15 @@
     width: 140px;
 }
 
+.usercon {
+    display: flex;
+    justify-content: center;
+}
+
+.signup {
+    width: 420px;
+}
+
+.w1280 {
+    width: 1280px;
+}
