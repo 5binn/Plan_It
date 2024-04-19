@@ -44,9 +44,11 @@ export default function MainLayout({ children, }: Readonly<{ children: React.Rea
                     <Link href="/main"><i className="fa-regular fa-calendar-check"></i>PlanIt</Link>
                 </div>
                 <div>
-                    <Link href="/main/curriculum"> Curriculum |</Link>
-                    {username && <Link href="/main/about"> {username} | </Link>}
-                    <button onClick={handleLogout}> 로그아웃</button>
+                    {username && <span className="pl-2 pr-2 font-bold">[ {username} ] 님 환영합니다.</span>}
+                    <Link className="pl-2 pr-2 border-l-2 border-solid border-gray-500 font-bold"
+                     href={"/main/" + username}>내 정보</Link>
+                    <button className="pl-2 pr-2 border-l-2 border-solid border-gray-500 font-bold" 
+                    onClick={handleLogout}>로그아웃</button>
                 </div>
             </div>
             <div className="main">

@@ -8,19 +8,27 @@ import com.example.PlanIt.global.security.SecurityUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    @Value("${custom.randomPW}")
+    private String characters;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder;
 
     public RsData<List<SiteUser>> searchUsers(String keyword) {
         return userRepository.findByKeyword(keyword).isEmpty() ?
@@ -46,22 +54,36 @@ public class UserService {
         ));
     }
 
+    public RsData<SiteUser> getUserByEmail(String email) {
+        return userRepository.findByEmail(email).map((siteUser) -> RsData.of(
+                "S-2",
+                "성공",
+                siteUser
+        )).orElseGet(() -> RsData.of(
+                "F-2",
+                "해당 회원 없음"
+        ));
+    }
+
+
     public boolean verificationUsername(String username) {
         return userRepository.existsByUsername(username);
     }
+
     public boolean verificationNickname(String nickname) {
         return userRepository.existsByNickname(nickname);
     }
+
     public boolean verificationEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
     @Transactional
     public RsData<SiteUser> create(String username, String password, String nickname, String email) {
-
         try {
             SiteUser siteUser = SiteUser.builder()
                     .username(username)
-                    .password(password)
+                    .password(passwordEncoder.encode(password))
                     .nickname(nickname)
                     .email(email)
                     .build();
@@ -113,7 +135,14 @@ public class UserService {
 
     @Transactional
     public RsData<AuthAndMakeTokensResponseBody> authAndMakeTokens(String username, String password) {
-        SiteUser siteUser = this.userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("사용자가 존재하지 않습니다."));
+        SiteUser siteUser = this.userRepository.findByUsername(username)
+                .filter(user -> {
+                    if (!passwordEncoder.matches(password, user.getPassword())) {
+                        throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+                    }
+                    return true;
+                })
+                .orElseThrow(() -> new RuntimeException("사용자가 존재하지 않습니다."));
 
         // AccessToken 생성
         String accessToken = jwtProvider.genAccessToken(siteUser);
@@ -143,21 +172,52 @@ public class UserService {
             );
         }
     }
+
     @Transactional
-    public RsData<SiteUser> update(Long id, String nickname, String email) {
-        RsData<SiteUser> siteUserRsData = this.getUserById(id);
+    public RsData<SiteUser> updatePw(String email, String pw) {
+        RsData<SiteUser> siteUserRsData = this.getUserByEmail(email);
         if (siteUserRsData.isFail()) {
             return siteUserRsData;
         }
         try {
             SiteUser updateUser = siteUserRsData.getData().toBuilder()
+                    .password(passwordEncoder.encode(pw))
+                    .build();
+            this.userRepository.save(updateUser);
+            return RsData.of(
+                    "S-5",
+                    "수정 완료",
+                    updateUser);
+        } catch (Exception e) {
+            return RsData.of(
+                    "F-5",
+                    "수정 실패",
+                    null
+            );
+        }
+    }
+
+    public String generatePw() {
+        StringBuilder pw = new StringBuilder(8);
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.ints(8, 0, characters.length())
+                .mapToObj(characters::charAt)
+                .forEach(pw::append);
+        return pw.toString();
+    }
+
+    @Transactional
+    public RsData<SiteUser> update(SiteUser user, String nickname, String email, String password) {
+        try {
+            SiteUser updateUser = user.toBuilder()
                     .nickname(nickname)
+                    .password(passwordEncoder.encode(password))
                     .email(email)
                     .build();
             this.userRepository.save(updateUser);
             return RsData.of(
                     "S-5",
-                    "%d번 수정 완료".formatted(id),
+                    "%s 님 수정 완료".formatted(user.getUsername()),
                     updateUser);
         } catch (Exception e) {
             return RsData.of(

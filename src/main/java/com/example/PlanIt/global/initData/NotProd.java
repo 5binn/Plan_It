@@ -27,7 +27,7 @@ public class NotProd {
     CommandLineRunner initCurriculum(CurriculumService curriculumService, UserService userService, PasswordEncoder passwordEncoder,
                                      ScheduleService scheduleService, CommentService commentService, GuestService guestService) {
         return args ->{
-            String password = passwordEncoder.encode("1234");
+            String password = "1234";
 
             SiteUser user1 = userService.create("user1", password, "TeachMAN","test1@test.com").getData();
             SiteUser user2 = userService.create("user2", password, "Yellow","test2@test.com").getData();

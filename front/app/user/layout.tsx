@@ -22,8 +22,8 @@ export default function UserLayout({ children, }: Readonly<{ children: React.Rea
                     <Link href="/"><i className="fa-regular fa-calendar-check"></i>PlanIt</Link>
                 </div>
                 <div>
-                   <Link href="/user/signup"> 회원가입 |</Link>
-                   <Link href="/user/find"> ID/PW찾기 </Link>
+                   <Link className="font-bold" href="/user/signup"> 회원가입 |</Link>
+                   <Link className="font-bold" href="/user/find"> ID/PW찾기 </Link>
                 </div>
             </div>
             <div className="usercon">

@@ -9,12 +9,17 @@ import { CookiesProvider } from "react-cookie";
 import LoginCheck from "./loginCheck";
 import "./styles.css"
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
+  useEffect(() => {
+    document.title = "Plan It";
+  }, []);
+  
 
   return (
     <html lang="ko">

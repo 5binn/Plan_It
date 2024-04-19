@@ -6,6 +6,8 @@ import com.example.PlanIt.domain.user.dto.UserDto;
 import com.example.PlanIt.domain.user.entity.SiteUser;
 import com.example.PlanIt.domain.user.entity.UserForm;
 import com.example.PlanIt.domain.user.service.UserService;
+import com.example.PlanIt.global.mail.dto.MailDto;
+import com.example.PlanIt.global.mail.service.MailService;
 import com.example.PlanIt.global.request.Rq;
 import com.example.PlanIt.global.rsData.RsData;
 import com.example.PlanIt.global.util.Response;
@@ -25,6 +27,7 @@ import java.util.List;
 public class ApiV1UserController {
     private final UserService userService;
     private final Rq rq;
+    private final MailService mailService;
 
     @GetMapping("")
     public RsData<Response.getUsers> getUsers(@RequestParam(value = "kw", defaultValue = "") String kw) {
@@ -53,6 +56,12 @@ public class ApiV1UserController {
         return userService.create(userForm.getUsername(), userForm.getPassword1(), userForm.getNickname(), userForm.getEmail());
     }
 
+    @PatchMapping("/update")
+    public RsData<SiteUser> update(@Valid @RequestBody UserForm userForm) {
+        SiteUser user = rq.getMember();
+        return userService.update(user, userForm.getPassword1(), userForm.getNickname(), userForm.getEmail());
+    }
+
     @PostMapping("/username")
     public boolean checkId(@RequestParam(value = "id", defaultValue = "") String username) {
         return userService.verificationUsername(username);
@@ -66,6 +75,29 @@ public class ApiV1UserController {
     @PostMapping("/email")
     public boolean checkEmail(@RequestParam(value = "email", defaultValue = "") String email) {
         return userService.verificationEmail(email);
+    }
+
+    @PostMapping("/find/id")
+    public boolean findId(@RequestParam(value = "email", defaultValue = "") String email) {
+        RsData<SiteUser> rsData = userService.getUserByEmail(email);
+        MailDto mailDto = new MailDto();
+        mailDto.setTo(email);
+        mailDto.setTitle("[PlanI]t ID 찾기 결과입니다.");
+        mailDto.setContent("해당 ID는 [ %s ] 입니다.".formatted(rsData.getData().getUsername()));
+        mailService.sendMail(mailDto);
+        return true;
+    }
+
+    @PostMapping("/find/pw")
+    public boolean findPw(@RequestParam(value = "email", defaultValue = "") String email) {
+        String newPw = userService.generatePw();
+        RsData<SiteUser> rsData = userService.updatePw(email, newPw);
+        MailDto mailDto = new MailDto();
+        mailDto.setTo(email);
+        mailDto.setTitle("[PlanIt] 비밀번호 찾기 결과입니다.");
+        mailDto.setContent("[%s]님의 새로운 비밀번호는 [ %s ] 입니다.".formatted(rsData.getData().getUsername(), newPw));
+        mailService.sendMail(mailDto);
+        return true;
     }
 
 
@@ -102,7 +134,7 @@ public class ApiV1UserController {
 
     @PostMapping("/login")
     public RsData<LoginResponseBody> login(@Valid @RequestBody LoginRequestBody loginRequestBody) {
-
+        System.out.println(loginRequestBody.getPassword());
         RsData<UserService.AuthAndMakeTokensResponseBody> authAndMakeTokensRs = userService.authAndMakeTokens(loginRequestBody.getUsername(), loginRequestBody.getPassword());
 
         // 쿠키에 accessToken, refreshToken 토큰 넣기

@@ -10,7 +10,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,6 +23,16 @@ public class SerTests {
     @Autowired
     private CurriculumRepository curriculumRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Test
+    @DisplayName("비번검증")
+    void pwTest() {
+        String enPW = passwordEncoder.encode("1234");
+        System.out.println(enPW);
+        System.out.println(passwordEncoder.matches("1234",enPW));
+    }
     @Test
     @DisplayName("데이터 넣기")
     void test01() {
@@ -29,8 +41,8 @@ public class SerTests {
             Curriculum curriculum = Curriculum.builder()
                     .name("커리큘럼 이름1")
                     .host(new SiteUser())
-                    .startDate(LocalDateTime.now())
-                    .endDate(LocalDateTime.now().plusDays(2L))
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now().plusDays(2L))
                     .build();
             curriculumRepository.save(curriculum);
             curriculumRsData = RsData.of(
@@ -115,8 +127,8 @@ public class SerTests {
             try {
                 Curriculum updateCurriculum = curriculumRsData.getData().toBuilder()
                         .name("커리큘럼 수정")
-                        .startDate(LocalDateTime.now().minusDays(1L))
-                        .endDate(LocalDateTime.now().plusDays(1L))
+                        .startDate(LocalDate.now().minusDays(1L))
+                        .endDate(LocalDate.now().plusDays(1L))
                         .build();
                 this.curriculumRepository.save(updateCurriculum);
                 curriculumRsData = RsData.of(
