@@ -16,7 +16,8 @@ export interface Host {
 export interface Guest {
     id: number;
     curriculumName: string;
-    userName: string;
+    username: string;
+    nickname: string;
     invite: string;
 }
 
@@ -24,6 +25,7 @@ export interface Schedule {
     id: number;
     content: string;
     date: string;
+    curriculum: Curriculum;
 }
 
 export interface Comment {

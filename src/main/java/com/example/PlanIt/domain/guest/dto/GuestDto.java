@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 public class GuestDto {
     private Long id;
     private String curriculumName;
-    private String userName;
+    private String username;
+    private String nickname;
     private String invite;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
@@ -22,7 +23,8 @@ public class GuestDto {
     public GuestDto(Curriculum curriculum, SiteUser siteUser, Guest guest) {
         this.id = guest.getId();
         this.curriculumName = curriculum.getName();
-        this.userName = siteUser.getUsername();
+        this.username = siteUser.getUsername();
+        this.nickname = siteUser.getNickname();
         this.invite = guest.isInvite() ? "승인" : "대기";
         this.createdDate = guest.getCreatedDate();
         this.modifiedDate = guest.getModifiedDate();

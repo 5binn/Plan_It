@@ -77,7 +77,7 @@ export default function InviteForm({ curriculum, username, curriculumId }: any) 
             })
             .catch((err) => {
             })
-            console.log(findUser);
+        console.log(findUser);
     };
 
     const invite = async (e: React.FormEvent<HTMLFormElement>, id: number) => {
@@ -96,41 +96,36 @@ export default function InviteForm({ curriculum, username, curriculumId }: any) 
     }
 
     return (
-        <div className="text-sm">
+        <div className="mt-1 text-sm">
             <form onSubmit={search}>
-                <input className="border w-full" type="text" name="keyword" value={keyword} onChange={handleSearchChange} />
-                <button type="submit" className="border w-full mt-1">검색</button>
+                <input className="border rounded w-full" type="text" name="keyword" value={keyword} onChange={handleSearchChange} />
+                <button type="submit" className="border rounded w-full mt-1 hover:bg-gray-200">검색</button>
             </form>
-            {findUser.length != 0 ? findUser.map((user: any) => (
-                <div className="between invitebtn border rounded text-sm mt-1 pl-1" >
-                                <span className="invcuri truncate font-bold item">sdas</span>
-                                <div className="invitebtn text-xs">
-                                    <button className="border rounded mt-1 mb-1 mr-1 p-1 hover:bg-gray-200" >수락</button>
-                                    <button className="border rounded mt-1 mb-1 mr-1 p-1 hover:bg-gray-200">거절</button>
+            <div className="mt-2 max-h-40 overflow-auto">
+                {findUser.length != 0 ? findUser.map((user: any) => (
+                    <div key={user.id}>
+                        <form className="between border rounded text-sm mt-1 pl-1 pt-1 pb-1" onSubmit={(e) => invite(e, user.id)}>
+                            <div className="itemco ml-1">
+                                <div className="itemco">
+                                    <span className="curiname truncate font-bold ">ID: {user.username}</span>
+                                    <span className="truncate text-xs">닉네임: {user.nickname}</span>
+                                </div>
+                                <div className="text-xs">
+                                    <span >{user.email}</span>
                                 </div>
                             </div>
-
-
-                <div key={user.id}>
-                    <form onSubmit={(e) => invite(e, user.id)}>
-                        <span>ID:{user.username}/</span>
-                        <span>닉네임:{user.nickname}</span>
-                        {guestList.find((guest: Guest) =>
-                            guest.userName == user.username
-                        ) ? <></>
-                            : <button className="border rounded-md" type="submit">초대</button>}
-                    </form>
-                </div>
-            )) : <></>}
-            {curriculum?.host.username == username ? <div>
-                {!waitingGuestIsNull ? waitingGuestList.map((guest: Guest) =>
-                    <li key={guest.id}>
-                        <Link href={"/curriculum/" + guest.id}>{guest.id}|</Link>
-                        <span >{guest.userName}|</span>
-                        <span >{guest.invite}</span>
-                    </li>
-                ) : <></>}
-            </div> : <></>}
+                            <div className="ml-2 mr-1 ">
+                                <div className="btngroup text-xs">
+                                    {guestList.find((guest: Guest) =>
+                                        guest.username == user.username
+                                    ) ? <></>
+                                        : <button className="border rounded mt-1 mb-1 mr-1 p-1 hover:bg-gray-200" type="submit">초대</button>}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                )) : <></>}
+            </div>
         </div>
     )
 }

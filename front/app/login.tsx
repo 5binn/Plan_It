@@ -45,11 +45,11 @@ export default function Login({ }) {
         <div className='right rounded-lg'>
             <form onSubmit={onLogin} className='loginBox'>
                 <div className='loginElement'>
-                    <label className="loginLabel text-gray-200" > ID</label>
+                    <label className="text-4xl font-bold text-gray-200" > ID</label>
                     <input className='loginInput rounded' type="text" name="username" value={user.username} onChange={handleChange} />
                 </div>
                 <div className='loginElement'>
-                    <label className='loginLabel text-gray-200'>PW</label>
+                    <label className='text-4xl font-bold text-gray-200'>PW</label>
                     <input className='loginInput rounded' type="password" name="password" value={user.password} onChange={handleChange} />
                 </div>
                 <button className="mt-2 w-full rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-200"

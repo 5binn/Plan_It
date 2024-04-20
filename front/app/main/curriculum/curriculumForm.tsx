@@ -39,7 +39,7 @@ export default function CurriculumForm({ fetchCurriculums, handleClick }: any) {
                 <input className="border w-full" type="date" name="startDate" value={curriculum.startDate} onChange={handleChange} />
                 <label >종료일</label>
                 <input className="border w-full" type="date" name="endDate" value={curriculum.endDate} onChange={handleChange} />
-                <button className="border w-full mt-1" type="submit">등록</button>
+                <button className="border w-full mt-1 hover:bg-gray-200" type="submit">등록</button>
             </form>
         </div>
     )

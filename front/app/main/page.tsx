@@ -25,7 +25,7 @@ export default function Main() {
     const [invites, setInvites] = useState([]);
     const [isNullI, setIsNullI] = useState(Boolean);
 
-    const [isClickC, setIsClickC] = useState(Boolean);
+    const [isClick, setIsClick] = useState(Boolean);
     const [isOpen, setIsOpen] = useState<Number | null>(null);
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -92,16 +92,16 @@ export default function Main() {
         fetchInvites();
     }
 
-    const handleClickC = () => {
+    const handleClick = () => {
         if (isOpen != null) {
             setIsOpen(null);
         }
-        setIsClickC(!isClickC);
+        setIsClick(!isClick);
     }
 
     const openForm = (id: Number) => {
-        if (isClickC) {
-            setIsClickC(!isClickC);
+        if (isClick) {
+            setIsClick(!isClick);
         }
         if (isOpen == null) {
             setIsOpen(id);
@@ -153,11 +153,11 @@ export default function Main() {
                 <div className="w-full m-2">
                     <div className="mycurriculum">
                         <span className="text-lg font-bold">내 모임</span>
-                        {!isClickC ? <button className="text-lg font-bold mr-2 pb-2" onClick={handleClickC}>+</button>
-                            : <button className="text-lg font-bold mr-2 pb-2" onClick={handleClickC}>x</button>}
+                        {!isClick ? <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>+</button>
+                            : <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>x</button>}
                     </div>
                     <div className="w-full">
-                        {isClickC ? <CurriculumForm fetchCurriculums={fetchCurriculums} handleClick={handleClickC} className="w-full" /> : <></>}
+                        {isClick ? <CurriculumForm fetchCurriculums={fetchCurriculums} handleClick={handleClick} className="w-full" /> : <></>}
                     </div>
                     {!isNullC ? curriculums.map((curriculum: Curriculum) =>
                         <>
@@ -192,7 +192,7 @@ export default function Main() {
                                         <input className="border w-full" type="date" name="startDate" value={upCurriculum.startDate} onChange={handleChange} />
                                         <label >종료일</label>
                                         <input className="border w-full" type="date" name="endDate" value={upCurriculum.endDate} onChange={handleChange} />
-                                        <button className="border w-full mt-1" type="submit">수정</button>
+                                        <button className="border w-full mt-1  hover:bg-gray-200" type="submit">수정</button>
                                     </form>
                                 </div>
                                 : <></>}
