@@ -1,7 +1,5 @@
 package com.example.PlanIt.domain.user.controller;
 
-import com.example.PlanIt.domain.curriculum.dto.CurriculumDto;
-import com.example.PlanIt.domain.curriculum.entity.Curriculum;
 import com.example.PlanIt.domain.user.dto.UserDto;
 import com.example.PlanIt.domain.user.entity.SiteUser;
 import com.example.PlanIt.domain.user.entity.UserForm;
@@ -59,7 +57,7 @@ public class ApiV1UserController {
     @PatchMapping("/update")
     public RsData<SiteUser> update(@Valid @RequestBody UserForm userForm) {
         SiteUser user = rq.getMember();
-        return userService.update(user, userForm.getPassword1(), userForm.getNickname(), userForm.getEmail());
+        return userService.update(user, userForm.getNickname(), userForm.getEmail(), userForm.getPassword1());
     }
 
     @PostMapping("/username")

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link";
 import CurriculumForm from "./curriculumForm";
 import api from "@/app/util/api";
-import { Curriculum } from "@/app/util/type";
+import type { Curriculum } from "@/app/util/type";
 
 
 

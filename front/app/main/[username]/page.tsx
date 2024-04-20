@@ -46,11 +46,12 @@ export default function Username() {
 
         };
         fetchData();
+        console.log(siteUser);
     }, [])
 
     const update = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await api.patch("/api/v1/users", siteUser);
+        const response = await api.patch("/api/v1/users/update", siteUser);
         if (response.status == 200) {
             setSiteUser({
                 username: '',

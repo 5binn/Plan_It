@@ -23,7 +23,7 @@ export default function Home() {
 
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen w-full">
       <Logo></Logo>
       <Login></Login>
     </div >

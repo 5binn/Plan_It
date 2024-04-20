@@ -77,6 +77,7 @@ export default function InviteForm({ curriculum, username, curriculumId }: any) 
             })
             .catch((err) => {
             })
+            console.log(findUser);
     };
 
     const invite = async (e: React.FormEvent<HTMLFormElement>, id: number) => {
@@ -95,24 +96,21 @@ export default function InviteForm({ curriculum, username, curriculumId }: any) 
     }
 
     return (
-        <div>
-            {!approvedGuestIsNull ? approvedGuestList.map((guest: Guest) => {
-                return guest.userName !== curriculum?.host.username ? (
-                    <li key={guest.id}>
-                        <Link href={"/curriculum/" + guest.id}>{guest.id}|</Link>
-                        <span>{guest.userName}|</span>
-                        <span>{guest.invite}</span>
-                    </li>
-                ) : (
-                    <div key={guest.id}></div>
-                );
-            }) : <></>}
-
+        <div className="text-sm">
             <form onSubmit={search}>
                 <input className="border w-full" type="text" name="keyword" value={keyword} onChange={handleSearchChange} />
-                <button type="submit" className="border w-full">검색</button>
+                <button type="submit" className="border w-full mt-1">검색</button>
             </form>
             {findUser.length != 0 ? findUser.map((user: any) => (
+                <div className="between invitebtn border rounded text-sm mt-1 pl-1" >
+                                <span className="invcuri truncate font-bold item">sdas</span>
+                                <div className="invitebtn text-xs">
+                                    <button className="border rounded mt-1 mb-1 mr-1 p-1 hover:bg-gray-200" >수락</button>
+                                    <button className="border rounded mt-1 mb-1 mr-1 p-1 hover:bg-gray-200">거절</button>
+                                </div>
+                            </div>
+
+
                 <div key={user.id}>
                     <form onSubmit={(e) => invite(e, user.id)}>
                         <span>ID:{user.username}/</span>
@@ -124,15 +122,7 @@ export default function InviteForm({ curriculum, username, curriculumId }: any) 
                     </form>
                 </div>
             )) : <></>}
-
-            {guestList.map((guest: Guest) =>
-                <li >
-                    <span >{guest.userName}|</span>
-                    <span >{guest.invite}|</span>
-                </li>)}
-
             {curriculum?.host.username == username ? <div>
-                <h2>승인대기</h2>
                 {!waitingGuestIsNull ? waitingGuestList.map((guest: Guest) =>
                     <li key={guest.id}>
                         <Link href={"/curriculum/" + guest.id}>{guest.id}|</Link>

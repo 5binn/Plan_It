@@ -19,12 +19,14 @@ export default function Main() {
     const router = useRouter();
 
     const [curriculums, setCurriculums] = useState([]);
+    const [upCurriculum, setUpCurriculum] = useState({ name: '', startDate: '', endDate: '' });
     const [isNullC, setIsNullC] = useState(Boolean);
 
     const [invites, setInvites] = useState([]);
     const [isNullI, setIsNullI] = useState(Boolean);
 
-    const [isClick, setIsClick] = useState(Boolean);
+    const [isClickC, setIsClickC] = useState(Boolean);
+    const [isOpen, setIsOpen] = useState<Number | null>(null);
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -67,7 +69,6 @@ export default function Main() {
         return format(new Date(date), 'yy.MM.dd');
     }
 
-
     useEffect(() => {
         fetchCurriculums();
         fetchInvites();
@@ -91,9 +92,47 @@ export default function Main() {
         fetchInvites();
     }
 
-    const handleClick = () => {
-        setIsClick(!isClick);
+    const handleClickC = () => {
+        if (isOpen != null) {
+            setIsOpen(null);
+        }
+        setIsClickC(!isClickC);
     }
+
+    const openForm = (id: Number) => {
+        if (isClickC) {
+            setIsClickC(!isClickC);
+        }
+        if (isOpen == null) {
+            setIsOpen(id);
+            api.get(`/api/v1/curriculums/${id}`)
+            .then(response => setUpCurriculum(response.data.data.curriculum));
+        } else {
+            setIsOpen(null)
+        }
+    }
+
+    const update = async (e: React.FormEvent<HTMLFormElement>, curriculumId: number) => {
+        e.preventDefault();
+        if (upCurriculum.startDate > upCurriculum.endDate) {
+            return alert('시작일은 종료일보다 늦을 수 없습니다.');
+        }
+        const response = await api.patch(`/api/v1/curriculums/${curriculumId}`, upCurriculum);
+        if (response.status == 200) {
+            setUpCurriculum({ name: '', startDate: '', endDate: '' });
+            setIsOpen(null);
+            fetchCurriculums();
+        } else {
+            alert('수정에 실패했습니다.');
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setUpCurriculum({ ...upCurriculum, [name]: value });
+        console.log({ ...upCurriculum, [name]: value })
+    }
+
 
     const preMonth = () => {
         setCurrentMonth(subMonths(currentMonth, 1));
@@ -111,38 +150,55 @@ export default function Main() {
     return (
         <div className="main">
             <div className="left layout mt-4 border rounded-lg">
-                <div className="block m-2">
+                <div className="w-full m-2">
                     <div className="mycurriculum">
                         <span className="text-lg font-bold">내 모임</span>
-                        {!isClick ? <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>+</button>
-                            : <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>x</button>}
+                        {!isClickC ? <button className="text-lg font-bold mr-2 pb-2" onClick={handleClickC}>+</button>
+                            : <button className="text-lg font-bold mr-2 pb-2" onClick={handleClickC}>x</button>}
                     </div>
                     <div className="w-full">
-                        {isClick ? <CurriculumForm fetchCurriculums={fetchCurriculums} handleClick={handleClick} className="w-full"></CurriculumForm> : <></>}
+                        {isClickC ? <CurriculumForm fetchCurriculums={fetchCurriculums} handleClick={handleClickC} className="w-full" /> : <></>}
                     </div>
                     {!isNullC ? curriculums.map((curriculum: Curriculum) =>
-                        <div className="between border rounded text-sm mt-1 pl-1 pt-1 pb-1" key={curriculum.id}>
-                            <Link className="itemco ml-1" href={"/main/curriculum/" + curriculum.id}>
-                                <div className="itemco">
-                                    <span className="curiname truncate font-bold ">{curriculum.name}</span>
-                                    <span className="truncate text-xs">{curriculum.host.nickname}</span>
-                                </div>
-                                <div className="text-xs">
-                                    <span >{formatDate(curriculum.startDate)}~</span>
-                                    <span >{formatDate(curriculum.endDate)}</span>
-                                </div>
-                            </Link>
-                            <div className="ml-2 mr-1 ">
-                                {username == curriculum.host.username ?
-                                    <div className="btngroup text-xs">
-                                        <Link className="border rounded  p-1 hover:bg-gray-200" href={"/main/curriculum/" + curriculum.id + "/edit"}>수정</Link>
-                                        <button className="border rounded mt-1 p-1 hover:bg-gray-200" onClick={() => onDelete(curriculum.id)}>삭제</button>
+                        <>
+                            <div className="between border rounded text-sm mt-1 pl-1 pt-1 pb-1" key={curriculum.id}>
+                                <Link className="itemco ml-1" href={"/main/curriculum/" + curriculum.id}>
+                                    <div className="itemco">
+                                        <span className="curiname truncate font-bold ">{curriculum.name}</span>
+                                        <span className="truncate text-xs">{curriculum.host.nickname}</span>
                                     </div>
-                                    : <div>
-                                    </div>}
+                                    <div className="text-xs">
+                                        <span >{formatDate(curriculum.startDate)}~</span>
+                                        <span >{formatDate(curriculum.endDate)}</span>
+                                    </div>
+                                </Link>
+                                <div className="ml-2 mr-1 ">
+                                    {username == curriculum.host.username ?
+                                        <div className="btngroup text-xs">
+                                            {curriculum.id == isOpen ? <button className="border rounded  p-1 hover:bg-gray-200" onClick={() => openForm(curriculum.id)}>취소</button>
+                                                : <button className="border rounded  p-1 hover:bg-gray-200" onClick={() => openForm(curriculum.id)}>수정</button>}
+                                            <button className="border rounded mt-1 p-1 hover:bg-gray-200" onClick={() => onDelete(curriculum.id)}>삭제</button>
+                                        </div>
+                                        : <div>
+                                        </div>}
+                                </div>
                             </div>
-                        </div>
+                            {curriculum.id == isOpen ?
+                                <div className="text-sm">
+                                    <form onSubmit={(e) => update(e, curriculum.id)}>
+                                        <label >이름</label>
+                                        <input className="border w-full" type="text" name="name" value={upCurriculum.name} onChange={handleChange} />
+                                        <label >시작일</label>
+                                        <input className="border w-full" type="date" name="startDate" value={upCurriculum.startDate} onChange={handleChange} />
+                                        <label >종료일</label>
+                                        <input className="border w-full" type="date" name="endDate" value={upCurriculum.endDate} onChange={handleChange} />
+                                        <button className="border w-full mt-1" type="submit">수정</button>
+                                    </form>
+                                </div>
+                                : <></>}
+                        </>
                     ) : <span className="text-lg">모임이 없습니다.</span>}
+
                     <div className="invite mt-2">
                         {!isNullI ? <div className="text-lg font-bold ml-0.5">초대메세지</div> : <></>}
                         {!isNullI ? invites.map((invite: Guest) =>
@@ -157,7 +213,7 @@ export default function Main() {
                     </div>
                 </div>
             </div>
-            <div className="w-full ml-4 mt-5">
+            <div className="mt-5">
                 <CalenderHeader currentMonth={currentMonth} preMonth={preMonth} nextMonth={nextMonth} />
                 <CalenderDays />
                 <CalenderBody onDateClick={(day: any) => onDateClick} currentMonth={currentMonth} selectedDate={selectedDate} curriculums={curriculums} />

@@ -1,8 +1,8 @@
 import { addDays, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isWithinInterval, parse, startOfMonth, startOfWeek, subDays } from "date-fns"
 import "../../styles.css"
-import { Curriculum } from "@/app/util/type";
+import { Curriculum, Schedule } from "@/app/util/type";
 
-export const CalenderBody = ({ onDateClick, currentMonth, selectedDate, curriculums }: any) => {
+export const CalenderBody = ({ onDateClick, currentMonth, selectedDate, curriculums, schedules }: any) => {
 
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
@@ -38,9 +38,13 @@ export const CalenderBody = ({ onDateClick, currentMonth, selectedDate, curricul
 
                     </span>
                     <div className="daycontainer mt-1 ml-1 text-sm">
-                    {curriculums.map((curriculum: Curriculum) => (
+                    {curriculums?.map((curriculum: Curriculum) => (
                         isWithinInterval(day, { start: subDays(new Date(curriculum.startDate), 1), end: new Date(curriculum.endDate) }) &&
                         <span className="calcuri truncate border rounded mt-1 ml-1 pl-1" key={curriculum.id}>{curriculum.name}</span>
+                    ))}
+                    {schedules?.map((schedule: Schedule) => (
+                        isSameDay(day, new Date(schedule.date)) &&
+                        <span className="calcuri truncate border rounded mt-1 ml-1 pl-1" key={schedule.id}>{schedule.content}</span>
                     ))}
                     </div>
                 </div>,

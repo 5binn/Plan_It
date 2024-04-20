@@ -16,7 +16,7 @@ export default function UserLayout({ children, }: Readonly<{ children: React.Rea
     const [username, setUsername] = useState<string | undefined>();
 
     return (
-        <div className="container">
+        <div className="cont">
             <div className="top pb-3 mt-3">
                 <div className="font-bold text-3xl">
                     <Link href="/"><i className="fa-regular fa-calendar-check"></i>PlanIt</Link>

@@ -38,7 +38,7 @@ export default function MainLayout({ children, }: Readonly<{ children: React.Rea
 
 
     return (
-        <div className="container">
+        <div className="cont">
             <div className="top pb-3 mt-3">
                 <div className="font-bold text-3xl">
                     <Link href="/main"><i className="fa-regular fa-calendar-check"></i>PlanIt</Link>
@@ -46,14 +46,12 @@ export default function MainLayout({ children, }: Readonly<{ children: React.Rea
                 <div>
                     {username && <span className="pl-2 pr-2 font-bold">[ {username} ] 님 환영합니다.</span>}
                     <Link className="pl-2 pr-2 border-l-2 border-solid border-gray-500 font-bold"
-                     href={"/main/" + username}>내 정보</Link>
-                    <button className="pl-2 pr-2 border-l-2 border-solid border-gray-500 font-bold" 
-                    onClick={handleLogout}>로그아웃</button>
+                        href={"/main/" + username}>내 정보</Link>
+                    <button className="pl-2 pr-2 border-l-2 border-solid border-gray-500 font-bold"
+                        onClick={handleLogout}>로그아웃</button>
                 </div>
             </div>
-            <div className="main">
-                {children}
-            </div>
+            {children}
         </div>
     );
 }
