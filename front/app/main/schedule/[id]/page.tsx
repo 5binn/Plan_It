@@ -29,6 +29,12 @@ export default function Id() {
     const [upComment, setUpComment] = useState({ content: '' });
     const [upSchedule, setUpSchedule] = useState({ content: '' });
 
+    const [isOpenModal, setIsOpenModal] = useState(false);
+
+    const openModal = () => {
+        setIsOpenModal(!isOpenModal);
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await api.get('/api/v1/users/me')
@@ -236,8 +242,10 @@ export default function Id() {
                             <span className="font-semibold">등록된 댓글이 없습니다.</span>
                         </div>}
                 </div>
-                <Roulette></Roulette>
+                <button className="border" onClick={openModal}>룰렛</button>
+                {isOpenModal ? <Roulette openModal={openModal}></Roulette>: <></>}
             </div>
+            
         </>
     )
 }

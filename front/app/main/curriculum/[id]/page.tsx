@@ -40,7 +40,7 @@ export default function Id() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const openModal= () => {
+    const openModal = () => {
         setIsModalOpen(!isModalOpen);
     }
 
@@ -204,10 +204,40 @@ export default function Id() {
                     <div className="w-full m-2">
                         <div className="mycurriculum">
                             <span className="text-lg font-bold">일정</span>
-                            {username === curriculum?.host.username && (
-                                <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>
-                                    {!isClick ? "+" : "x"}
-                                </button>
+                            {username == curriculum?.host.username && (
+                                !isClick ? (
+                                    <button className="text-lg font-bold mr-2 pb-2 drop-shadow" onClick={handleClick}>
+                                        <svg
+                                            className="w-6 h-6"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M14 20L14 8M8 14l12 0"
+                                            ></path>
+                                        </svg>
+                                    </button>)
+                                    : (<button className="text-lg font-bold mr-2 pb-2 drop-shadow" onClick={handleClick}>
+                                        <svg
+                                            className="w-6 h-6"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M19 19L9 9M9 19l10-10"
+                                            ></path>
+                                        </svg>
+                                    </button>)
                             )}
                         </div>
                         <div className="w-full">

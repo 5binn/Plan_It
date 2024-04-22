@@ -43,22 +43,25 @@ export default function Login({ }) {
     }
     return (
         <div className='right rounded-lg'>
-            <form onSubmit={onLogin} className='loginBox'>
-                <div className='loginElement'>
-                    <label className="text-4xl font-bold text-gray-200" > ID</label>
+            <form onSubmit={onLogin} className='loginBox drop-shadow'>
+                <div className='loginElement drop-shadow'>
+                    <label className="text-4xl font-bold text-gray-100 drop-shadow" > ID</label>
                     <input className='loginInput rounded' type="text" name="username" value={user.username} onChange={handleChange} />
                 </div>
-                <div className='loginElement'>
-                    <label className='text-4xl font-bold text-gray-200'>PW</label>
+                <div className='loginElement drop-shadow'>
+                    <label className='text-4xl font-bold text-gray-100 drop-shadow'>PW</label>
                     <input className='loginInput rounded' type="password" name="password" value={user.password} onChange={handleChange} />
                 </div>
-                <button className="mt-2 w-full rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-200"
+                <button className="mt-2 w-full rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-600
+                 hover:bg-gray-200 drop-shadow"
                     type="submit">로그인</button>
             </form>
             <div className='loginBottom mt-3'>
-                <Link className=" rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                <Link className=" rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-200
+                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 drop-shadow"
                     href={"/user/signup"}>회원가입</Link >
-                <Link className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                <Link className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-600 shadow-sm 
+                hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 drop-shadow"
                     href={"/user/find"}>ID/PW 찾기</Link >
             </div>
         </div>

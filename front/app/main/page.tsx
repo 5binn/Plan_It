@@ -106,7 +106,7 @@ export default function Main() {
         if (isOpen == null) {
             setIsOpen(id);
             api.get(`/api/v1/curriculums/${id}`)
-            .then(response => setUpCurriculum(response.data.data.curriculum));
+                .then(response => setUpCurriculum(response.data.data.curriculum));
         } else {
             setIsOpen(null)
         }
@@ -153,8 +153,38 @@ export default function Main() {
                 <div className="w-full m-2">
                     <div className="mycurriculum">
                         <span className="text-lg font-bold">내 모임</span>
-                        {!isClick ? <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>+</button>
-                            : <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>x</button>}
+                        {!isClick ? <button className="text-lg font-bold mr-2 pb-2 drop-shadow" onClick={handleClick}>
+                            <svg
+                                className="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M14 20L14 8M8 14l12 0"
+                                ></path>
+                            </svg>
+                        </button>
+                            : <button className="text-lg font-bold mr-2 pb-2 drop-shadow" onClick={handleClick}>
+                                <svg
+                                    className="w-6 h-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M19 19L9 9M9 19l10-10"
+                                    ></path>
+                                </svg>
+                            </button>}
                     </div>
                     <div className="w-full">
                         {isClick ? <CurriculumForm fetchCurriculums={fetchCurriculums} handleClick={handleClick} className="w-full" /> : <></>}
