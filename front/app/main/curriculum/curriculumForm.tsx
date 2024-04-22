@@ -31,15 +31,15 @@ export default function CurriculumForm({ fetchCurriculums, handleClick }: any) {
     }
 
     return (
-        <div className="text-sm">
+        <div className="text-sm drop-shadow-sm">
             <form onSubmit={create}>
                 <label >이름</label>
-                <input className="border w-full" type="text" name="name" value={curriculum.name} onChange={handleChange} />
+                <input className="border w-full drop-shadow" type="text" name="name" value={curriculum.name} onChange={handleChange} />
                 <label >시작일</label>
-                <input className="border w-full" type="date" name="startDate" value={curriculum.startDate} onChange={handleChange} />
+                <input className="border w-full drop-shadow" type="date" name="startDate" value={curriculum.startDate} onChange={handleChange} />
                 <label >종료일</label>
-                <input className="border w-full" type="date" name="endDate" value={curriculum.endDate} onChange={handleChange} />
-                <button className="border w-full mt-1 hover:bg-gray-200" type="submit">등록</button>
+                <input className="border w-full drop-shadow" type="date" name="endDate" value={curriculum.endDate} onChange={handleChange} />
+                <button className="border w-full mt-1 hover:bg-gray-200 drop-shadow" type="submit">등록</button>
             </form>
         </div>
     )

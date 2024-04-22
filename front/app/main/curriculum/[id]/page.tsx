@@ -13,6 +13,7 @@ import { CalenderHeader } from "../../calender/header";
 import { CalenderDays } from "../../calender/days";
 import { CalenderBody } from "../../calender/body";
 import { addMonths, format, subMonths } from "date-fns";
+import Roulette from "../../roulette/roulette";
 
 export default function Id() {
 
@@ -35,6 +36,13 @@ export default function Id() {
     const [isClick, setIsClick] = useState(Boolean);
     const [isOpen, setIsOpen] = useState<Number | null>(null);
     const [username, setUsername] = useState<string | undefined>();
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal= () => {
+        setIsModalOpen(!isModalOpen);
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -151,7 +159,6 @@ export default function Id() {
         }
     }
 
-    
     const update = async (e: React.FormEvent<HTMLFormElement>, curriculumId: number) => {
         e.preventDefault();
         const response = await api.patch(`/api/v1/schedules/${curriculumId}`, upSchedule);
@@ -173,33 +180,35 @@ export default function Id() {
 
     return (
         <>
-            <div className="w-screen max-w-screen-xl between items-center m-3">
+            <div className="w-screen max-w-screen-xl between items-center m-3 drop-shadow">
                 <div className="flex items-center ml-2">
-                    {/* <Link href={"/"} className="font-bold text-3xl">Home /</Link> */}
-                    <div className="ml">
-                        <div className="font-bold text-3xl"> {curriculum?.name}</div>
-                        <div className="text-xl">{curriculum?.host.nickname}</div>
-                    </div>
+                    <Link href={"/main"} className="font-semibold text-2xl">Home /</Link>
+                    <Link href={"/main/curriculum/" + curriculum?.id} className="ml-2">
+                        <div className="font-semibold text-2xl"> {curriculum?.name}</div>
+                    </Link>
                 </div>
                 <div className="mr-2">
                     {!approvedGuestIsNull ? approvedGuestList.map((guest: Guest) => {
                         return guest.username !== curriculum?.host.username ? (
                             <div key={guest.id}>
-                                <span className="border rounded p-1 ml-1">{guest.nickname}</span>
+                                <span className="border rounded pl-1 pr-1 ml-1 drop-shadow">{guest.nickname}</span>
                             </div>
                         ) : (
-                            <span className="text-base">초대된 회원이 없습니다.</span>
+                            <></>
                         );
-                    }) : <></>}
+                    }) : <span className="text-base">초대된 회원이 없습니다.</span>}
                 </div>
             </div>
             <div className="main">
-                <div className="left layout mt-4 border rounded-lg">
+                <div className="left layout mt-4 border rounded-lg drop-shadow">
                     <div className="w-full m-2">
                         <div className="mycurriculum">
                             <span className="text-lg font-bold">일정</span>
-                            {!isClick ? <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>+</button>
-                                : <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>x</button>}
+                            {username === curriculum?.host.username && (
+                                <button className="text-lg font-bold mr-2 pb-2" onClick={handleClick}>
+                                    {!isClick ? "+" : "x"}
+                                </button>
+                            )}
                         </div>
                         <div className="w-full">
                             {isClick ? <ScheduleForm fetchSchedules={fetchSchedules} id={params.id} handleClick={handleClick} className="w-full" /> : <></>}
@@ -208,7 +217,7 @@ export default function Id() {
                             {!scheduleIsNull ? scheduleList.map((schedule: Schedule) =>
                                 <>
                                     <div className="between border rounded text-sm mt-1 pl-1 pt-1 pb-1" key={schedule.id}>
-                                        <Link className="itemco ml-1" href={"/main/curriculum/" + schedule.id}>
+                                        <Link className="itemco ml-1" href={"/main/schedule/" + schedule.id}>
                                             <div className="itemco">
                                                 <span className="curiname truncate font-bold ">{schedule.content}</span>
                                             </div>
@@ -240,7 +249,7 @@ export default function Id() {
                                         : <></>}
                                 </>
                             ) : <span className="text-base">등록된 일정이 없습니다.</span>}
-
+                            {isModalOpen && <Roulette openModal={openModal} />}
                         </div>
                         {username == curriculum?.host.username ?
                             <div className="invite mt-2">
@@ -255,7 +264,7 @@ export default function Id() {
                 <div className="">
                     <CalenderHeader currentMonth={currentMonth} preMonth={preMonth} nextMonth={nextMonth} />
                     <CalenderDays />
-                    <CalenderBody currentMonth={currentMonth} schedules={scheduleList} />
+                    <CalenderBody currentMonth={currentMonth} schedules={scheduleList} selectedDate={selectedDate} onDelete={onDelete} />
                 </div>
             </div>
         </>

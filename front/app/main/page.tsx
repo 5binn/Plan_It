@@ -149,7 +149,7 @@ export default function Main() {
     };
     return (
         <div className="main">
-            <div className="left layout mt-4 border rounded-lg">
+            <div className="left layout mt-4 border rounded-lg drop-shadow">
                 <div className="w-full m-2">
                     <div className="mycurriculum">
                         <span className="text-lg font-bold">내 모임</span>
@@ -161,7 +161,7 @@ export default function Main() {
                     </div>
                     {!isNullC ? curriculums.map((curriculum: Curriculum) =>
                         <>
-                            <div className="between border rounded text-sm mt-1 pl-1 pt-1 pb-1" key={curriculum.id}>
+                            <div className="between border rounded text-sm mt-1 pl-1 pt-1 pb-1 drop-shadow" key={curriculum.id}>
                                 <Link className="itemco ml-1" href={"/main/curriculum/" + curriculum.id}>
                                     <div className="itemco">
                                         <span className="curiname truncate font-bold ">{curriculum.name}</span>

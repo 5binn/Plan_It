@@ -1,8 +1,9 @@
 import { addDays, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isWithinInterval, parse, startOfMonth, startOfWeek, subDays } from "date-fns"
 import "../../styles.css"
 import { Curriculum, Schedule } from "@/app/util/type";
+import Link from "next/link";
 
-export const CalenderBody = ({ onDateClick, currentMonth, selectedDate, curriculums, schedules }: any) => {
+export const CalenderBody = ({ onDateClick, currentMonth, selectedDate, curriculums, schedules, onDelete }: any) => {
 
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
@@ -40,11 +41,11 @@ export const CalenderBody = ({ onDateClick, currentMonth, selectedDate, curricul
                     <div className="daycontainer mt-1 ml-1 text-sm">
                     {curriculums?.map((curriculum: Curriculum) => (
                         isWithinInterval(day, { start: subDays(new Date(curriculum.startDate), 1), end: new Date(curriculum.endDate) }) &&
-                        <span className="calcuri truncate border rounded mt-1 ml-1 pl-1" key={curriculum.id}>{curriculum.name}</span>
+                        <Link href={`/main/curriculum/${curriculum.id}`} className="calcuri truncate border rounded mt-1 ml-1 pl-1 drop-shadow" key={curriculum.id}>{curriculum.name}</Link>
                     ))}
                     {schedules?.map((schedule: Schedule) => (
                         isSameDay(day, new Date(schedule.date)) &&
-                        <span className="calcuri truncate border rounded mt-1 ml-1 pl-1" key={schedule.id}>{schedule.content}</span>
+                        <Link href={`/main/schedule/${schedule.id}`} className="calcuri truncate border rounded mt-1 ml-1 pl-1 drop-shadow" key={schedule.id}>{schedule.content}</Link>
                     ))}
                     </div>
                 </div>,
@@ -53,11 +54,11 @@ export const CalenderBody = ({ onDateClick, currentMonth, selectedDate, curricul
         }
         console.log(formatDate(day))
         rows.push(
-            <div className="weeks " key={day}>
+            <div className="weeks drop-shadow-sm" key={day}>
                 {days}
             </div>,
         );
         days = [];
     }
-    return <div className="body border">{rows}</div>;
+    return <div className="body border drop-shadow-sm">{rows}</div>;
 }

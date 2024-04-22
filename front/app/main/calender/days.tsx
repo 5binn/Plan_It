@@ -15,7 +15,7 @@ export const CalenderDays = () => {
     }
 
     return (
-        <div className="weeks border">
+        <div className="weeks border font-semibold">
             {days}
         </div>
     )

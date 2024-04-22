@@ -38,12 +38,12 @@ export default function MainLayout({ children, }: Readonly<{ children: React.Rea
 
 
     return (
-        <div className="cont">
-            <div className="top pb-3 mt-3">
-                <div className="font-bold text-3xl">
-                    <Link href="/main"><i className="fa-regular fa-calendar-check"></i>PlanIt</Link>
+        <div className="cont drop-shadow-sm">
+            <div className="top pb-3 mt-3 drop-shadow-sm">
+                <div className="font-bold text-3xl drop-shadow-sm">
+                    <Link href="/main"><i className="fa-regular fa-calendar-check drop-shadow-sm"></i>PlanIt</Link>
                 </div>
-                <div>
+                <div className="drop-shadow-sm">
                     {username && <span className="pl-2 pr-2 font-bold">[ {username} ] 님 환영합니다.</span>}
                     <Link className="pl-2 pr-2 border-l-2 border-solid border-gray-500 font-bold"
                         href={"/main/" + username}>내 정보</Link>
