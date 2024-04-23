@@ -1,4 +1,4 @@
-## PlanIt
+# PlanIt
 
 ### 서비스 설명
 
